@@ -1,0 +1,41 @@
+<!-- gets user async and displays user data  -->
+<mat-card *ngIf="user$ | async as user" class="card">
+    <h1><strong>Profile</strong></h1>
+    <mat-card-content>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <h4><strong>Username:</strong></h4>
+                    {{user.username}}
+                </div>
+                <div class="col-6 mb-3">
+                    <h4><strong>Role:</strong></h4>
+                    {{user.role_type.role_type}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <h4><strong>First Name:</strong></h4>
+                    {{user.first_name}}
+                </div>
+                <div class="col-6 mb-3">
+                    <h4><strong>Last Name:</strong></h4>
+                    {{user.last_name}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <h4><strong>Created At:</strong></h4>
+                    {{user.created_at | date}}
+                </div>
+                <div class="col-6 mb-3">
+                    <h4><strong>Edited At:</strong></h4>
+                    {{user.edited_at | date}}
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+    </mat-card-actions>
+</mat-card>

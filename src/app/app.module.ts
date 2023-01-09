@@ -20,7 +20,11 @@ import {MatInputModule} from '@angular/material/input';
 import { HomeComponent } from './home/home.component'; 
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatMenuModule} from '@angular/material/menu'; 
-import {MatCardModule} from '@angular/material/card'; 
+import {MatCardModule} from '@angular/material/card';
+import { ChangePasswordComponent } from './change-password/change-password.component'; 
+import {MatDialogModule} from '@angular/material/dialog'; 
+import {MatSnackBarModule} from '@angular/material/snack-bar'; 
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import {MatCardModule} from '@angular/material/card';
     AppComponent,
     AppNavComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ChangePasswordComponent,
+    ProfileComponent
   ],
   imports: [
     // imports certain modules to use some functionality
@@ -48,7 +54,9 @@ import {MatCardModule} from '@angular/material/card';
     ReactiveFormsModule,
     MatExpansionModule,
     MatMenuModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

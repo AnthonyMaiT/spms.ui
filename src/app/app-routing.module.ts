@@ -4,11 +4,13 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginGuard } from './login/guard/login.guard';
 import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 // routes to direct user to certain components
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: '', component: HomeComponent, canActivate: [LoginGuard], canLoad: [LoginGuard]},
+  { path: 'profile', component: ProfileComponent },
 ];
 
 @NgModule({

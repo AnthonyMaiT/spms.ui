@@ -1,6 +1,6 @@
 import { Component, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './login/service/auth.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',

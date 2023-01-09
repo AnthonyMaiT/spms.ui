@@ -21,10 +21,10 @@ import { HomeComponent } from './home/home.component';
 import {MatExpansionModule} from '@angular/material/expansion'; 
 import {MatMenuModule} from '@angular/material/menu'; 
 import {MatCardModule} from '@angular/material/card';
-import { ChangePasswordComponent } from './change-password/change-password.component'; 
+import { ChangePasswordComponent } from './app-nav/change-password/change-password.component'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './app-nav/profile/profile.component';
 
 @NgModule({
   declarations: [

@@ -3,6 +3,7 @@
     <mat-toolbar class="mat-toolbar mat-primary">
         <mat-toolbar-row>
             <a mat-button routerLink="/">Student Points Management System</a>
+            <a mat-button *ngIf="isAdmin" routerLink="/users">Users</a>
             <span class="spacer"></span>
             <button mat-button [matMenuTriggerFor]="menu" aria-label="User">
                 <mat-icon [style.margin-right.px]=10>person</mat-icon>

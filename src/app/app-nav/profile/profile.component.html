@@ -33,6 +33,12 @@
                     {{user.edited_at | date}}
                 </div>
             </div>
+            <div class="row" *ngIf="!isAdmin">
+                <div class="col-6 mb-3">
+                    <h4><strong>Grade Level:</strong></h4>
+                    {{user.grade}}
+                </div>
+            </div>
         </div>
     </mat-card-content>
     <mat-card-actions align="end">

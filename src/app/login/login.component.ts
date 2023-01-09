@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { catchError, of, throwError } from 'rxjs';
-import { AuthService } from './service/auth.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'spms-login',

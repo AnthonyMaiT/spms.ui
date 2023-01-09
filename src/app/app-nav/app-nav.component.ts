@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ChangePasswordComponent } from '../change-password/change-password.component';
-import { AuthService } from '../login/service/auth.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AuthService } from '../services/auth.service';
 import { User } from '../users/interfaces/user';
 
 @Component({
@@ -20,12 +20,14 @@ export class AppNavComponent implements OnInit {
 
   // name for nav
   name:string = ''
+  isAdmin: boolean = false
 
   ngOnInit(): void {
     // adds name from api to display on nav
     this.authService.currentUser().subscribe((data) => {
       this.name = data.first_name + ' ' + data.last_name
     })
+    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => this.isAdmin=false)
   }
 
   // used to access profile

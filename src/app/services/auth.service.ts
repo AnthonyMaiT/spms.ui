@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
-import { ChangePassword } from 'src/app/change-password/change-password';
+import { catchError, map, throwError } from 'rxjs';
+import { ChangePassword } from 'src/app/app-nav/change-password/change-password';
 import { User } from 'src/app/users/interfaces/user';
 import { environment } from 'src/environments/environment';
 
@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   constructor(private http: HttpClient) { }
+
+  current_user?: User;
 
   // in order to get user async
   getUser$ = this.http.get<User>(environment.apiUrl+'/users/current', {withCredentials: true})
@@ -24,6 +26,10 @@ export class AuthService {
   // checks if logged in and then returns current user
   currentUser() {
     return this.http.get<User>(environment.apiUrl+'/users/current', {withCredentials: true})
+  }
+
+  isAdmin() {
+    return this.http.get<boolean>(environment.apiUrl +'/users/isadmin', {withCredentials: true})
   }
 
   changePassword(passwords: ChangePassword) {

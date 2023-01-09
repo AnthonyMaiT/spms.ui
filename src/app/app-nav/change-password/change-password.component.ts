@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { AuthService } from '../login/service/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { ChangePassword } from './change-password';
 
 @Component({

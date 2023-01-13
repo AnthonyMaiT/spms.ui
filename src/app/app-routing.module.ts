@@ -15,6 +15,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   // users is lazy loaded so would only generate when user is admin
   { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), canActivate: [AdminGuard], canLoad: [AdminGuard]},
+  // quarters is lazy loaded so would only activate/load when user is logged in
+  { path: 'quarters', loadChildren: () => import('./quarters/quarters.module').then(m => m.QuartersModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
 ];
 
 @NgModule({

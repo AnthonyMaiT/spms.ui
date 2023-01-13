@@ -1,0 +1,60 @@
+<!-- checks if editing/creating quarter range -->
+<h1 mat-dialog-title *ngIf="!quarterRange">Create Quarter Range</h1>
+<h1 mat-dialog-title *ngIf="quarterRange">Edit Quarter Range</h1>
+<!-- calls createOrEdit when submitted and create instance of quarterRangeForm -->
+<form [formGroup]="quarterRangeForm" (ngSubmit)="createOrEdit()">
+    <div class="container" mat-dialog-content>
+        <div class="row">
+            <!-- quarter field  -->
+            <div class="col-6 mb-3">
+                <!-- quarter field with select. options from stream -->
+                <mat-form-field>
+                    <mat-label>Quarter</mat-label>
+                    <mat-select formControlName="quarter_id">
+                        <mat-option *ngFor="let quarter of getQuarters$ | async"
+                            [value]="quarter.id">{{quarter.quarter}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <!-- start range field with datepicker -->
+            <div class="col-6 mb-3">
+                <mat-form-field [style.width.%]=95>
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="start_range">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>                  
+            </div>
+            <!-- end range field with datepicker -->
+            <div class="col-6 mb-3">
+                <mat-form-field [style.width.%]=95>
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="end_range">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>   
+            </div>
+            <!-- error when end date less than start date -->
+            <mat-error *ngIf="quarterRangeForm.get('end_range')?.hasError('invalidDate')">
+                End Date must be greater than Start Date
+            </mat-error>
+            <!-- error from api when validating dates -->
+            <mat-error *ngIf="apiErrorMessage">
+                {{apiErrorMessage}}
+            </mat-error>
+        </div>
+    </div>
+    <div mat-dialog-actions align="end">
+        <!-- closes the dialog -->
+        <button mat-button type="button" (click)="close()">Cancel</button>
+        <!-- submits the form to create/edit quarter range -->
+        <button mat-button mat-raised-button color="primary" [disabled]="quarterRangeForm.invalid">
+            <span *ngIf="!quarterRange">Create</span>
+            <span *ngIf="quarterRange">Edit</span>
+        </button>
+    </div>
+</form>

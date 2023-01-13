@@ -13,8 +13,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  current_user?: User;
-
   // in order to get user async
   getUser$ = this.http.get<User>(environment.apiUrl+'/users/current', {withCredentials: true})
 

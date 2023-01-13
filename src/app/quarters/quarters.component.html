@@ -1,0 +1,72 @@
+<!-- header above datatable -->
+<div class="mat-elevation-z8 header">
+    <div class="row">
+        <h1>Quarter Ranges</h1>
+    </div>
+    <mat-divider></mat-divider>
+    <!-- sub header for info and actions -->
+    <div class="row sub-header">
+        <div class="col">
+            <span color="accent">Quarter Ranges' Info and Actions</span>
+        </div>
+        <!-- would open dialog to create quarter ranges only for admins -->
+        <div class="col action" *ngIf="isAdmin">
+            <button mat-raised-button color="primary" (click)="createQuarterRange()">
+                <mat-icon>add</mat-icon>
+                Create New Quarter Range
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- datatable -->
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+        <!-- spinner to show that user data is loading -->
+        <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+            <mat-spinner></mat-spinner>
+        </div>
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+        </ng-container>
+        <!-- quarter column -->
+        <ng-container matColumnDef="quarter">
+            <th mat-header-cell *matHeaderCellDef> Quarter </th>
+            <td mat-cell *matCellDef="let row"> {{row.quarter.quarter}} </td>
+        </ng-container>
+        <!-- start_range column -->
+        <ng-container matColumnDef="start_range">
+            <th mat-header-cell *matHeaderCellDef> Start Date </th>
+            <td mat-cell *matCellDef="let row"> {{row.start_range | date}} </td>
+        </ng-container>
+        <!-- end range column -->
+        <ng-container matColumnDef="end_range">
+            <th mat-header-cell *matHeaderCellDef> End Date </th>
+            <td mat-cell *matCellDef="let row"> {{row.end_range |date}} </td>
+        </ng-container>
+        <!-- actions column -->
+        <ng-container matColumnDef="actions" *ngIf="isAdmin">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let row" class="actions">
+                <!-- would be able to edit quarter range by opening dialog for admins -->
+                <button mat-icon-button color="primary" aria-label="Edit Quarter Range" (click)="editQuarterRange(row)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <!-- would pull up delete quarter range dialog for admins -->
+                <button mat-icon-button color="accent" (click)="deleteQuarterRange(row.id)" aria-label="Delete User">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <!-- used to pass in data for columns -->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data</td>
+        </tr>
+    </table>
+</div>

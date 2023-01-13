@@ -23,7 +23,7 @@ export class CreateEditUserComponent implements OnInit {
   getRoleTypes$ = this.userService.getRoleTypes$
 
   // connects to dialogRef, formbuilder, snackbar, user data, and user service
-  constructor(public dialogRef: MatDialogRef<ChangePasswordComponent>,
+  constructor(public dialogRef: MatDialogRef<CreateEditUserComponent>,
     private fb: FormBuilder, private userService: UsersService,
     private snackBar: MatSnackBar, @Inject(MAT_DIALOG_DATA) public user: User,
   ) { }

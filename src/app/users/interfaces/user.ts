@@ -1,4 +1,4 @@
-// interface for exporting Users
+// interface for  Users
 import { RoleType } from "./role_type"
 
 export interface User {

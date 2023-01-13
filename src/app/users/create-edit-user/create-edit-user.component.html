@@ -1,0 +1,79 @@
+<!-- checks if editing/creating user -->
+<h1 mat-dialog-title *ngIf="!user">Create User</h1>
+<h1 mat-dialog-title *ngIf="user">Edit User</h1>
+<!-- calls createOrEdit when submitted and create instance of userForm -->
+<form [formGroup]="userForm" (ngSubmit)="createOrEdit()">
+    <div class="container" mat-dialog-content>
+        <div class="row">
+            <!-- username field  -->
+            <div class="col-6 mb-3">
+                <mat-form-field>
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="username">
+                </mat-form-field>
+            </div>
+            <div class="col-6 mb-3">
+                <!-- password field with toggle text/password feature -->
+                <mat-form-field *ngIf="!user">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <!-- first name field -->
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input type="text" matInput formControlName="first_name">
+                </mat-form-field>
+            </div>
+            <div class="col-6 mb-3">
+                <!-- last name field -->
+                <mat-form-field class="test">
+                    <mat-label>Last Name</mat-label>
+                    <input type="text" matInput formControlName="last_name">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 mb-3">
+                <!-- role type field with select. options from stream -->
+                <mat-form-field>
+                    <mat-label>Role Type</mat-label>
+                    <mat-select formControlName="role_type_id">
+                        <mat-option *ngFor="let role_type of getRoleTypes$ | async"
+                            [value]="role_type.id">{{role_type.role_type}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-6 mb-3" *ngIf="userForm.get('grade')">
+                <div class="col-6 mb-3">
+                    <!-- grade selector with only 4 grades -->
+                    <mat-form-field>
+                        <mat-label>Grade Level</mat-label>
+                        <mat-select formControlName="grade">
+                            <mat-option [value]="9">9th Grade</mat-option>
+                            <mat-option [value]="10">10th Grade</mat-option>
+                            <mat-option [value]="11">11th Grade</mat-option>
+                            <mat-option [value]="12">12th Grade</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions align="end">
+        <!-- closes the dialog -->
+        <button mat-button type="button" (click)="close()">Cancel</button>
+        <!-- submits the form to create/edit user -->
+        <button mat-button mat-raised-button color="primary" [disabled]="userForm.invalid">
+            <span *ngIf="!user">Create</span>
+            <span *ngIf="user">Edit</span>
+        </button>
+    </div>
+</form>

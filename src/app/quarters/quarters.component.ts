@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../services/auth.service';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
@@ -23,20 +24,19 @@ export class QuartersComponent implements OnInit {
   columnsToDisplay: string[] = this.displayedColumns.slice()
   // datasource of table
   dataSource!: QuarterRangesDataSource
+  // for pagination
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private quarterService: QuartersService, public dialog: MatDialog, private authService: AuthService,
     private snackBar: MatSnackBar) { }
   // when app is ran, load datasource
   ngOnInit(): void {
     this.dataSource = new QuarterRangesDataSource(this.quarterService)
-    this.dataSource.loadQuarterRanges()
+    this.dataSource.loadQuarterRanges(1, 5)
 
     // checks if admin and sets to var
-    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => this.isAdmin=false)
-    if (this.isAdmin == false) {
-      // would remove actions from columns to display
-      this.columnsToDisplay.pop()
-    }
+    // would remove actions from columns to display if not admin
+    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => {this.isAdmin=false; this.columnsToDisplay.pop()})
   }
   // to open create quarter range dialog and loads quarter range after
   createQuarterRange() {
@@ -44,8 +44,8 @@ export class QuartersComponent implements OnInit {
       height: '325px',
       width: '475px',
     })
-    // once closed, load users in case of changes
-    dialogRef.afterClosed().subscribe(() => { this.dataSource.loadQuarterRanges() })
+    // once closed, load quarter-ranges in case of changes
+    dialogRef.afterClosed().subscribe(() => { this.loadQuarterRanges() })
   }
   // to open edit quarter range dialog and loads quarter range after
   editQuarterRange(quarterRange: QuarterRange) {
@@ -56,7 +56,7 @@ export class QuartersComponent implements OnInit {
       data: quarterRange
     })
     // once closed, load users in case of changes
-    dialogRef.afterClosed().subscribe(() => { this.dataSource.loadQuarterRanges() })
+    dialogRef.afterClosed().subscribe(() => { this.loadQuarterRanges() })
   }
   // delets quarter range from db
   deleteQuarterRange(id: number) {
@@ -68,9 +68,23 @@ export class QuartersComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.quarterService.deleteQuarterRange(id).subscribe(() => this.dataSource.loadQuarterRanges())
+        this.quarterService.deleteQuarterRange(id).subscribe(() => {
+          this.loadQuarterRanges()
+          this.snackBar.open('Successfully Deleted Quarter Range', '', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            panelClass: ['snackbar-success']
+          })
+        })
       }
     });
+  }
+  // load quarter ranges from datasource with pagination
+  loadQuarterRanges() {
+    this.dataSource.loadQuarterRanges(
+      this.paginator.pageIndex + 1,
+      this.paginator.pageSize
+    )
   }
 
 }

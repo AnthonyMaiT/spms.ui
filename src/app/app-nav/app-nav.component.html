@@ -4,6 +4,14 @@
     <mat-toolbar-row>
       <!-- navigation links to access components and modules -->
       <a mat-button routerLink="/">Student Points Management System</a>
+      <button mat-button [matMenuTriggerFor]="event" aria-label="Events">
+        <span>Event</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+      <mat-menu #event="matMenu" xPosition="after">
+        <button mat-menu-item routerLink="/event-times">Event Times</button>
+        <button mat-menu-item routerLink="/event">Events</button>
+      </mat-menu>
       <a mat-button routerLink="/quarters">Quarters</a>
       <a mat-button *ngIf="isAdmin" routerLink="/users">Users</a>
       <span class="spacer"></span>

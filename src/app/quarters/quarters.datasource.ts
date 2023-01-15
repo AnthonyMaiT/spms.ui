@@ -8,8 +8,11 @@ export class QuarterRangesDataSource implements DataSource<QuarterRange> {
     // subject for loading quarterranges 
     private quarterRangesSubjects = new BehaviorSubject<QuarterRange[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
-    // sets loading as an observable
+    // count subject to get the count of amount of users
+    private count = new BehaviorSubject<number>(0);
+    // defines these as an observable stream of data
     public loading$ = this.loadingSubject.asObservable();
+    public count$ = this.count.asObservable();
     // connects to service
     constructor(private quarterService: QuartersService) {}
     // makes quaterRange an observable
@@ -22,10 +25,10 @@ export class QuarterRangesDataSource implements DataSource<QuarterRange> {
         this.loadingSubject.complete()
     }
     // loads the data into the quarter range subject source
-    loadQuarterRanges() {
+    loadQuarterRanges(pageIndex: number = 1, pageSize: number = 5) {
         this.loadingSubject.next(true)
         this.quarterService.getQuarterRanges().pipe(
             finalize(() => this.loadingSubject.next(false))
-        ).subscribe(data => {this.quarterRangesSubjects.next(data)})
+        ).subscribe(data => {this.quarterRangesSubjects.next(data.items); this.count.next(data.total)})
     }
 }

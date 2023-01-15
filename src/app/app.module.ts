@@ -25,6 +25,7 @@ import { ChangePasswordComponent } from './app-nav/change-password/change-passwo
 import {MatDialogModule} from '@angular/material/dialog'; 
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 import { ProfileComponent } from './app-nav/profile/profile.component';
+import { EventModule } from './events/event/event.module';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProfileComponent } from './app-nav/profile/profile.component';
     MatMenuModule,
     MatCardModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    EventModule
   ],
   providers: [],
   bootstrap: [AppComponent]

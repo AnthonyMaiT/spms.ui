@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CreateUpdateQuarterRange } from '../interfaces/create-update-quarter-range';
+import { PaginateQuarterRange } from '../interfaces/paginate-quarter-range';
 import { Quarter } from '../interfaces/quarter';
 import { QuarterRange } from '../interfaces/quarter-range';
 
@@ -15,9 +16,12 @@ export class QuartersService {
 
   // gets all four quarters fron api
   getQuarters$ = this.http.get<Quarter[]>(environment.apiUrl+'/quarters', {withCredentials: true})
-  // gets all quarter ranges
-  getQuarterRanges() {
-    return this.http.get<QuarterRange[]>(environment.apiUrl+'/quarter-ranges', {withCredentials: true})
+  // gets all quarter ranges with paginatation params
+  getQuarterRanges(pageIndex: number = 1, pageSize: number = 5) {
+    return this.http.get<PaginateQuarterRange>(environment.apiUrl+'/quarter-ranges', { withCredentials: true,
+      params: new HttpParams().set('size',pageSize)
+                              .set('page', pageIndex)
+    })
   }
   // pass in data to api to create a quarter range
   createQuarterRange(quarterRange: CreateUpdateQuarterRange) {

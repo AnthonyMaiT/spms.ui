@@ -135,7 +135,14 @@ export class UsersComponent implements AfterViewInit, OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.userService.deleteUser(id).subscribe(() => this.loadUsers())
+            this.userService.deleteUser(id).subscribe(() => {
+              this.loadUsers()
+              this.snackBar.open('Successfully Deleted User', '', {
+                duration: 3000,
+                horizontalPosition: 'right',
+                panelClass: ['snackbar-success']
+              })
+            })
           }
         });
       }

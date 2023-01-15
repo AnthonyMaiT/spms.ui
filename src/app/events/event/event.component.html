@@ -1,19 +1,19 @@
 <!-- header above datatable -->
 <div class="mat-elevation-z8 header">
     <div class="row">
-        <h1>Quarter Ranges</h1>
+        <h1>Events</h1>
     </div>
     <mat-divider></mat-divider>
     <!-- sub header for info and actions -->
     <div class="row sub-header">
         <div class="col">
-            <span color="accent">Quarter Ranges' Info and Actions</span>
+            <span color="accent">Event Info and Actions</span>
         </div>
-        <!-- would open dialog to create quarter ranges only for admins -->
+        <!-- would open dialog to create event only for admins -->
         <div class="col action" *ngIf="isAdmin">
-            <button mat-raised-button color="primary" (click)="createQuarterRange()">
+            <button mat-raised-button color="primary" (click)="createEvent()">
                 <mat-icon>add</mat-icon>
-                Create New Quarter Range
+                Create New Event
             </button>
         </div>
     </div>
@@ -22,7 +22,7 @@
 <!-- datatable -->
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
-        <!-- spinner to show that user data is loading -->
+        <!-- spinner to show that data is loading -->
         <div class="spinner-container" *ngIf="dataSource.loading$ | async">
             <mat-spinner></mat-spinner>
         </div>
@@ -32,30 +32,25 @@
             <td mat-cell *matCellDef="let row"> {{row.id}} </td>
         </ng-container>
         <!-- quarter column -->
-        <ng-container matColumnDef="quarter">
-            <th mat-header-cell *matHeaderCellDef> Quarter </th>
-            <td mat-cell *matCellDef="let row"> {{row.quarter.quarter}} </td>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
         </ng-container>
-        <!-- start_range column -->
-        <ng-container matColumnDef="start_range">
-            <th mat-header-cell *matHeaderCellDef> Start Date </th>
-            <td mat-cell *matCellDef="let row"> {{row.start_range | date}} </td>
-        </ng-container>
-        <!-- end range column -->
-        <ng-container matColumnDef="end_range">
-            <th mat-header-cell *matHeaderCellDef> End Date </th>
-            <td mat-cell *matCellDef="let row"> {{row.end_range |date}} </td>
+        <!-- is sport column -->
+        <ng-container matColumnDef="is_sport">
+            <th mat-header-cell *matHeaderCellDef> Is Sport </th>
+            <td mat-cell *matCellDef="let row"> {{row.is_sport}} </td>
         </ng-container>
         <!-- actions column -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let row" class="actions">
-                <!-- would be able to edit quarter range by opening dialog for admins -->
-                <button mat-icon-button color="primary" aria-label="Edit Quarter Range" (click)="editQuarterRange(row)">
+                <!-- would be able to edit event by opening dialog for admins -->
+                <button mat-icon-button color="primary" aria-label="Edit Event" (click)="editEvent(row)">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <!-- would pull up delete quarter range dialog for admins -->
-                <button mat-icon-button color="accent" (click)="deleteQuarterRange(row.id)" aria-label="Delete User">
+                <!-- would pull up delete event dialog for admins -->
+                <button mat-icon-button color="accent" (click)="deleteEvent(row.id)" aria-label="Delete Event">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>
@@ -70,7 +65,7 @@
         </tr>
     </table>
 
-    <!-- paginor for paged quarter ranges -->
+    <!-- paginor for paged events -->
     <mat-paginator [length]="dataSource.count$ | async" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
         aria-label="Select page of events"></mat-paginator>
 </div>

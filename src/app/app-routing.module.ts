@@ -17,6 +17,10 @@ const routes: Routes = [
   { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), canActivate: [AdminGuard], canLoad: [AdminGuard]},
   // quarters is lazy loaded so would only activate/load when user is logged in
   { path: 'quarters', loadChildren: () => import('./quarters/quarters.module').then(m => m.QuartersModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
+  // event is lazy loaded so would only activate/load when user is logged in
+  { path: 'event', loadChildren: () => import('./events/event/event.module').then(m => m.EventModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
+  // event times is lazy loaded so would only activate/load when user is logged in
+  { path: 'event-times', loadChildren: () => import('./events/event-times/event-times.module').then(m => m.EventTimesModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
 ];
 
 @NgModule({

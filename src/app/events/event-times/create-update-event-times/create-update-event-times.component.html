@@ -38,6 +38,10 @@
                  </mat-form-field>
             </div>
         </div>
+        <!-- api error messages -->
+        <mat-error *ngIf="apiError">
+            {{apiError}}
+        </mat-error>
         <!-- error when end time less than start time -->
         <mat-error *ngIf="eventTimeForm.get('end_time')?.hasError('invalidDateTime')">
             End Time must be greater than Start Time
@@ -47,7 +51,7 @@
         <!-- closes the dialog -->
         <button mat-button type="button" (click)="close()">Cancel</button>
         <!-- submits the form to create/edit event time -->
-        <button mat-button mat-raised-button color="primary" [disabled]="eventTimeForm.invalid">
+        <button mat-button mat-raised-button color="primary" [disabled]="eventTimeForm.invalid || !eventName">
             <span *ngIf="!eventTime">Create</span>
             <span *ngIf="eventTime">Edit</span>
         </button>

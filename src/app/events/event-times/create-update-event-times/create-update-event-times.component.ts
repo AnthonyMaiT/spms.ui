@@ -19,6 +19,8 @@ export class CreateUpdateEventTimesComponent implements OnInit {
   eventTimeForm!: FormGroup
   // event name for form
   eventName: string =''
+  // errors from api
+  apiError: string = ''
   // connects to services and modules
   constructor(private eventTimeService: EventTimesService, public dialogRef: MatDialogRef<CreateUpdateEventTimesComponent>,
     private fb: FormBuilder, @Inject(MAT_DIALOG_DATA) public eventTime: EventTime, public dialog: MatDialog,
@@ -32,6 +34,7 @@ export class CreateUpdateEventTimesComponent implements OnInit {
     }, {validators: EventTimeValidator.validateDateTime})
     // when editing form, pass in from eventTime data
     if (this.eventTime) {
+      this.eventName = this.eventTime.event.name
       this.eventTimeForm.patchValue({
         start_time: moment(this.eventTime.start_time),
         end_time: moment(this.eventTime.end_time),
@@ -62,6 +65,8 @@ export class CreateUpdateEventTimesComponent implements OnInit {
           panelClass: ['snackbar-success']
         })
         this.dialogRef.close()
+      }, (error) => {
+        this.apiError = error.error.detail
       })
     } else {
       // for creating event time
@@ -72,6 +77,8 @@ export class CreateUpdateEventTimesComponent implements OnInit {
           panelClass: ['snackbar-success']
         })
         this.dialogRef.close()
+      }, (error) => {
+        this.apiError = error.error.detail
       })
     }
   }

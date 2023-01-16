@@ -49,7 +49,7 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   // to open create event time dialog then loads event times after
   createEventTime() {
     const dialogRef = this.dialog.open(CreateUpdateEventTimesComponent, {
-      height: '325px',
+      height: '350px',
       width: '475px',
     })
     // once closed, load event time in case of changes
@@ -60,7 +60,7 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   editEventTime(eventTime: EventTime) {
     // would open the component with specified height/width and data passed into it
     const dialogRef = this.dialog.open(CreateUpdateEventTimesComponent, {
-      height: '325px',
+      height: '350px',
       width: '475px',
       data: eventTime
     })

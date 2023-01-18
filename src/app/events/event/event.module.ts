@@ -43,7 +43,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
     MatCheckboxModule,
     MatPaginatorModule
   ]

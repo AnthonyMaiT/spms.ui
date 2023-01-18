@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { EventSelectorComponent } from 'src/app/shared/event-selector/event-selector.component';
+import { QuarterRangeSelectorComponent } from 'src/app/shared/quarter-range-selector/quarter-range-selector.component';
 import { UserConfirmationDialogComponent } from 'src/app/shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { CreateUpdateEventTimesComponent } from './create-update-event-times/create-update-event-times.component';
 import { EventTimesDataSource } from './event-times.datasource';
@@ -24,6 +26,11 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   columnsToDisplay: string[] = this.displayedColumns.slice()
   //datasource of the table
   dataSource!: EventTimesDataSource
+  // filters for datatable
+  quarter_name = ''
+  event_name = ''
+  quarter_range_id = ''
+  event_id = ''
   // for pagination
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
@@ -94,8 +101,48 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   loadEventTimes() {
     this.dataSource.loadEventTimes(
       this.paginator.pageIndex + 1,
-      this.paginator.pageSize
+      this.paginator.pageSize,
+      this.event_id,
+      this.quarter_range_id
     )
+  }
+
+  // opens dialog to select quarter range
+  openSelectQuarterRange() {
+    const dialogRef2 = this.dialog.open(QuarterRangeSelectorComponent, {
+      width: '500px'
+    })
+    dialogRef2.afterClosed().subscribe(data => {
+      if (data) {
+        this.quarter_name = data.quarter.quarter
+        this.quarter_range_id = data.id
+        this.loadEventTimes()
+      }
+    })
+  }
+  // removes filter from query
+  removeQuarterFilter() {
+    this.quarter_name = ''
+    this.quarter_range_id = ''
+    this.loadEventTimes()
+  }
+
+  // open select event to choose event for event time
+  openSelectEvent() {
+    const dialogRef2 = this.dialog.open(EventSelectorComponent)
+    dialogRef2.afterClosed().subscribe(data => {
+      if (data) {
+        this.event_name = data.name
+        this.event_id = data.id
+        this.loadEventTimes()
+      }
+    })
+  }
+  // removes filter from query
+  removeEventFilter() {
+    this.event_name = ''
+    this.event_id = ''
+    this.loadEventTimes()
   }
 
 

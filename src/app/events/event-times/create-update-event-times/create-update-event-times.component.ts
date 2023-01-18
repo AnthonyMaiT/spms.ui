@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
-import { EventSelectorComponent } from '../event-selector/event-selector.component';
+import { EventSelectorComponent } from '../../../shared/event-selector/event-selector.component';
 import { CreateUpdateEventTime } from '../interfaces/create-update-event-times';
 import { EventTime } from '../interfaces/event-time';
 import { EventTimesService } from '../services/event-times.service';

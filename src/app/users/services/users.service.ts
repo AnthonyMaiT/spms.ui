@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserPointOut } from 'src/app/student-points/interfaces/UserPointOut';
 import { environment } from 'src/environments/environment';
 import { CreateUser } from '../interfaces/create_user';
 import { PaginateUser } from '../interfaces/paginate_user';
@@ -67,6 +68,12 @@ export class UsersService {
                               .set('page', pageIndex)
                               .set('sortDir', sortDir)
                               .set('sortColumn', sortColumn)
+    })
+  }
+  // finds user with a certain username
+  findUser(username: string ='') {
+    return this.http.get<UserPointOut>(environment.apiUrl+'/users/find', {withCredentials: true,
+      params: new HttpParams().set('username', username)
     })
   }
 

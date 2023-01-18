@@ -10,14 +10,17 @@ import { PaginateEventTime } from '../interfaces/paginate-event-times';
   providedIn: 'root'
 })
 export class EventTimesService {
+  getRecentEventTimes$ = this.http.get<EventTime[]>(environment.apiUrl+'/event-times/current', {withCredentials: true})
   // connects to httpclient to pass in data to api
   constructor(private http: HttpClient) { }
   // gets all event times
-  getEventTimes(pageIndex: number = 1, pageSize: number = 5) {
+  getEventTimes(pageIndex: number = 1, pageSize: number = 5, event_id: string = '', quarter_range_id: string ='') {
     return this.http.get<PaginateEventTime>(environment.apiUrl + '/event-times', {
       withCredentials: true,
       params: new HttpParams().set('size', pageSize)
         .set('page', pageIndex)
+        .set('event_id', event_id)
+        .set('quarter_range_id', quarter_range_id)
     })
   }
   // pass in data to api to create an event time
@@ -31,5 +34,9 @@ export class EventTimesService {
   // delete an event time in api
   deleteEventTime(id: number) {
     return this.http.delete(environment.apiUrl + `/event-times/${id}`, { withCredentials: true })
+  }
+  // get the current events ongoing 
+  getRecentEventTimes() {
+    return this.http.get<EventTime[]>(environment.apiUrl+'/event-times/current', {withCredentials: true})
   }
 }

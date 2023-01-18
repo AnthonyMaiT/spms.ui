@@ -23,11 +23,13 @@ export class QuarterRangesDataSource implements DataSource<QuarterRange> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.quarterRangesSubjects.complete()
         this.loadingSubject.complete()
+        this.count.complete()
     }
     // loads the data into the quarter range subject source
+    // has pagination args
     loadQuarterRanges(pageIndex: number = 1, pageSize: number = 5) {
         this.loadingSubject.next(true)
-        this.quarterService.getQuarterRanges().pipe(
+        this.quarterService.getQuarterRanges(pageIndex, pageSize).pipe(
             finalize(() => this.loadingSubject.next(false))
         ).subscribe(data => {this.quarterRangesSubjects.next(data.items); this.count.next(data.total)})
     }

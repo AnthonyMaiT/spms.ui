@@ -21,13 +21,16 @@ export class AppNavComponent implements OnInit {
   // name for nav
   name:string = ''
   isAdmin: boolean = false
+  isStaff: boolean = false
 
   ngOnInit(): void {
     // adds name from api to display on nav
     this.authService.currentUser().subscribe((data) => {
       this.name = data.first_name + ' ' + data.last_name
     })
+    // checks for certain credentials of current user
     this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => this.isAdmin=false)
+    this.authService.isStaff().subscribe(()=> this.isStaff = true, () => this.isStaff=false)
   }
 
   // used to access profile

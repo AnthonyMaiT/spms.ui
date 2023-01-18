@@ -2,9 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { debounceTime, tap } from 'rxjs';
-import { EventsDataSource } from '../../event/event.datasource';
-import { SchoolEvent } from '../../event/interfaces/event';
-import { EventService } from '../../event/services/event.service';
+import { EventsDataSource } from '../../events/event/event.datasource';
+import { SchoolEvent } from '../../events/event/interfaces/event';
+import { EventService } from '../../events/event/services/event.service';
 
 @Component({
   selector: 'spms-event-selector',
@@ -21,7 +21,7 @@ export class EventSelectorComponent implements OnInit, AfterViewInit {
   // for pagination
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private eventService: EventService, public dialogRef: MatDialogRef<EventSelectorComponent>) { }
-
+  // initializes datasource
   ngOnInit(): void {
     this.dataSource = new EventsDataSource(this.eventService)
     this.dataSource.loadEvents(1, 5)

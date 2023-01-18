@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { EventTimesRoutingModule } from './event-times-routing.module';
-import { EventTimesComponent } from './event-times.component';
+import { StudentPointsRoutingModule } from './student-points-routing.module';
+import { StudentPointsComponent } from './student-points.component';
+import { CreateEditStudentPointComponent } from './create-edit-student-point/create-edit-student-point.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
@@ -14,23 +15,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'src/app/shared/shared.module';
-import {MatCheckboxModule} from '@angular/material/checkbox'; 
+import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { CreateUpdateEventTimesComponent } from './create-update-event-times/create-update-event-times.component';
-import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
-import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
-import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
-    // components of event times
-    EventTimesComponent,
-    CreateUpdateEventTimesComponent,  ],
+    // components for module
+    StudentPointsComponent,
+    CreateEditStudentPointComponent
+  ],
   imports: [
-    // modules for components 
+    // modules for the components
     CommonModule,
-    EventTimesRoutingModule,
+    StudentPointsRoutingModule,
     HttpClientModule,
     MatDividerModule,
     MatTableModule,
@@ -44,12 +42,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
-    MatCheckboxModule,
-    MatPaginatorModule,
-    NgxMatMomentModule,
-    MatDatepickerModule,
-    NgxMatDatetimePickerModule,
-    
+    MatSelectModule,
+    SharedModule,
+    MatPaginatorModule
   ]
 })
-export class EventTimesModule { }
+export class StudentPointsModule { }

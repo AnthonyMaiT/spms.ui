@@ -27,9 +27,10 @@ export class EventTimesDataSource implements DataSource<EventTime> {
         this.count.complete()
     }
     // loads the data into the event times subject source
-    loadEventTimes(pageIndex: number = 1, pageSize: number = 5) {
+    // has filters 
+    loadEventTimes(pageIndex: number = 1, pageSize: number = 5, event_id: string = '', quarter_range_id: string = '') {
         this.loadingSubject.next(true)
-        this.eventTimeService.getEventTimes(pageIndex, pageSize).pipe(
+        this.eventTimeService.getEventTimes(pageIndex, pageSize, event_id, quarter_range_id).pipe(
             finalize(() => this.loadingSubject.next(false))
         ).subscribe(data => { this.eventTimeSubjects.next(data.items); this.count.next(data.total) })
     }

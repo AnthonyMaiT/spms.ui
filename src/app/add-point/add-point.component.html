@@ -1,0 +1,85 @@
+<!-- mat stepper for steps to add a user -->
+<mat-stepper [linear]="true" #stepper>
+    <!-- step checks username entered -->
+    <mat-step [stepControl]="usernameFormGroup">
+        <form [formGroup]="usernameFormGroup">
+            <ng-template matStepLabel>Fill out username</ng-template>
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput placeholder="Username" formControlName="username" required>
+            </mat-form-field>
+            <div>
+                <button mat-raised-button color="primary" [disabled]="usernameFormGroup.invalid" matStepperNext (click)="getUser()">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <!-- would return error if no username/username isn't valid. then list user details for confirmation -->
+    <mat-step>
+        <ng-template matStepLabel>User Detail</ng-template>
+        <mat-error *ngIf="apiErrorMessage">
+            {{apiErrorMessage}}
+        </mat-error>
+        <mat-card *ngIf="user">
+            <h1><strong>Student Profile</strong></h1>
+            <mat-card-content>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <h4><strong>Username:</strong></h4>
+                            {{user.username}}
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h4><strong>Grade Level:</strong></h4>
+                            {{user.grade}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <h4><strong>First Name:</strong></h4>
+                            {{user.first_name}}
+                        </div>
+                        <div class="col-6 mb-3">
+                            <h4><strong>Last Name:</strong></h4>
+                            {{user.last_name}}
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div [style.margin-top.px]=10>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" [disabled]="!user" matStepperNext (click)="getUser()">Next</button>
+        </div>
+    </mat-step>
+    <!-- chooses event that is ongoing at the time to submit point to db -->
+    <mat-step [stepControl]="eventFormGroup" label="Choose Event">
+        <mat-error *ngIf="hasEventTimes">
+            No events at this time
+        </mat-error>
+        <form [formGroup]="eventFormGroup">
+            <mat-form-field>
+                <mat-label>Current Events</mat-label>
+                <mat-select formControlName="event_time_id">
+                    <mat-option *ngFor="let event_times of getCurrentEventTimes$ | async"
+                        [value]="event_times.id">{{event_times.event.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-raised-button color="primary" matStepperNext [disabled]="eventFormGroup.invalid" (click)="addPoint()">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <!-- return error and reset stepper -->
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <mat-error *ngIf="apiErrorMessage2">
+            {{apiErrorMessage2}}
+        </mat-error>
+        <h2 *ngIf="!apiErrorMessage2">Successfully Added Point</h2>
+        <div [style.margin-top.px]=10>
+            <button mat-button matStepperPrevious *ngIf="apiErrorMessage2">Back</button>
+            <button mat-raised-button color="primary" (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-stepper>

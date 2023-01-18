@@ -4,6 +4,8 @@
     <mat-toolbar-row>
       <!-- navigation links to access components and modules -->
       <a mat-button routerLink="/">Student Points Management System</a>
+      <a mat-button *ngIf="isStaff" routerLink="/add-point">Add Point</a>
+      <a mat-button routerLink="/student-points">Student Point Records</a>
       <button mat-button [matMenuTriggerFor]="event" aria-label="Events">
         <span>Event</span>
         <mat-icon>keyboard_arrow_down</mat-icon>

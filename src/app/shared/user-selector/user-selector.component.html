@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Select User</h2>
+<!-- datatable -->
+<mat-dialog-content class="mat-typography">
+    <!-- username filter -->
+    <div class="col">
+        <mat-form-field [style.width.%]=100 appearance="fill">
+            <mat-label>Username Filter</mat-label>
+            <input matInput placeholder="Username" (keyup)="applyFilter()" [(ngModel)]="usernameFilter">
+        </mat-form-field>
+    </div>
+    <!-- first name filter -->
+    <div class="col">
+        <mat-form-field [style.width.%]=100 appearance="fill">
+            <mat-label>First Name Filter</mat-label>
+            <input matInput placeholder="First" (keyup)="applyFilter()" [(ngModel)]="firstNameFilter">
+        </mat-form-field>
+    </div>
+    <!-- last name filter -->
+    <div class="col">
+        <mat-form-field [style.width.%]=100 appearance="fill">
+            <mat-label>Last Name Filter</mat-label>
+            <input matInput placeholder="Last" (keyup)="applyFilter()" [(ngModel)]="lastNameFilter">
+        </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+            <!-- spinner to show that data is loading -->
+            <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+                <mat-spinner></mat-spinner>
+            </div>
+            <!-- actions column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let row" class="actions">
+                    <!-- closes and returns selected column -->
+                    <button mat-raised-button color="primary" aria-label="Select User" [mat-dialog-close]="row">
+                        <span>Select</span>
+                    </button>
+                </td>
+            </ng-container>
+            <!-- username column -->
+            <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef> Username </th>
+                <td mat-cell *matCellDef="let row"> {{row.username}} </td>
+            </ng-container>
+            <!-- first name column -->
+            <ng-container matColumnDef="first_name">
+                <th mat-header-cell *matHeaderCellDef> First Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.first_name}} </td>
+            </ng-container>
+            <!-- last name column -->
+            <ng-container matColumnDef="last_name">
+                <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                <td mat-cell *matCellDef="let row"> {{row.last_name}} </td>
+            </ng-container>
+            <!-- grade column -->
+            <ng-container matColumnDef="grade">
+                <th mat-header-cell *matHeaderCellDef> Grade </th>
+                <td mat-cell *matCellDef="let row"> {{row.grade}} </td>
+            </ng-container>
+            <!-- used to pass in data for columns -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data</td>
+            </tr>
+        </table>
+    
+        <!-- paginor for paged users -->
+        <mat-paginator [length]="dataSource.count$ | async" [pageSizeOptions]="[5]" showFirstLastButtons
+            aria-label="Select page of users"></mat-paginator>
+    </div>
+</mat-dialog-content>
+<!-- closes selector without sending data -->
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" mat-dialog-close>Close</button>
+  </mat-dialog-actions>

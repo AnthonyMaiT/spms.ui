@@ -26,6 +26,8 @@ const routes: Routes = [
   { path: 'student-points', loadChildren: () => import('./student-points/student-points.module').then(m => m.StudentPointsModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
   // adding point is lazy loaded so would only activate/load when staff/admin is logged in
   { path: 'add-point', loadChildren: () => import('./add-point/add-point.module').then(m => m.AddPointModule), canActivate:[StaffGuard], canLoad: [StaffGuard] },
+    // adding point is lazy loaded so would only activate/load when user is logged in
+  { path: 'prizes', loadChildren: () => import('./prizes/prizes.module').then(m => m.PrizesModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
 ];
 
 @NgModule({

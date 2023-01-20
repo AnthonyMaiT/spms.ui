@@ -35,4 +35,8 @@ export class QuartersService {
   deleteQuarterRange(id: number) {
     return this.http.delete(environment.apiUrl+`/quarter-ranges/${id}`, {withCredentials: true})
   }
+  // gets the current quarter from api
+  getCurrentQuarter() {
+    return this.http.get<QuarterRange>(environment.apiUrl+'/quarter-ranges/current', {withCredentials: true})
+  }
 }

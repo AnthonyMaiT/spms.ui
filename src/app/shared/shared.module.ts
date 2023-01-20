@@ -14,6 +14,7 @@ import { UserSelectorComponent } from './user-selector/user-selector.component';
 import { EventTimeSelectorComponent } from './event-time-selector/event-time-selector.component';
 import { QuarterRangeSelectorComponent } from './quarter-range-selector/quarter-range-selector.component';
 import { MatIconModule } from '@angular/material/icon';
+import { PrizeSelectorComponent } from './prize-selector/prize-selector.component';
 
 
 // shared module for other components to use 
@@ -23,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
     EventSelectorComponent,
     UserSelectorComponent,
     EventTimeSelectorComponent,
-    QuarterRangeSelectorComponent
+    QuarterRangeSelectorComponent,
+    PrizeSelectorComponent
   ],
   imports: [
     CommonModule,

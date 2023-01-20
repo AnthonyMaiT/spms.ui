@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap } from 'rxjs';
+import { QuartersService } from 'src/app/quarters/services/quarters.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventSelectorComponent } from 'src/app/shared/event-selector/event-selector.component';
 import { QuarterRangeSelectorComponent } from 'src/app/shared/quarter-range-selector/quarter-range-selector.component';
@@ -21,7 +22,7 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed on datatable
-  displayedColumns: string[] = ['id', 'event.name', 'event.is_sport','start_time', 'end_time', 'actions']
+  displayedColumns: string[] = ['id', 'event.name', 'event.is_sport', 'start_time', 'end_time', 'actions']
   // for displaying/not displaying actions column
   columnsToDisplay: string[] = this.displayedColumns.slice()
   //datasource of the table
@@ -35,12 +36,20 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private eventTimeService: EventTimesService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar, private quarterService: QuartersService) { }
 
   // when app is ran, load datasource
   ngOnInit(): void {
     this.dataSource = new EventTimesDataSource(this.eventTimeService)
-    this.dataSource.loadEventTimes(1, 5)
+    this.dataSource.loadEventTimes(1, 5, this.event_id, this.quarter_range_id)
+    // gets the current quarter for filter
+    this.quarterService.getCurrentQuarter().subscribe((data) => {
+      if (data) {
+        this.quarter_name = data.quarter.quarter;
+        this.quarter_range_id = data.id.toString();
+        this.dataSource.loadEventTimes(1, 5, this.event_id, this.quarter_range_id)
+      }
+    })
 
     //checks if admin and sets to var
     // would remove actions from columns to display

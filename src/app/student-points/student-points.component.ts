@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { QuartersService } from '../quarters/services/quarters.service';
 import { AuthService } from '../services/auth.service';
 import { EventTimeSelectorComponent } from '../shared/event-time-selector/event-time-selector.component';
 import { QuarterRangeSelectorComponent } from '../shared/quarter-range-selector/quarter-range-selector.component';
@@ -37,15 +38,24 @@ export class StudentPointsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private studentPointService: StudentPointsService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar, private quarterService: QuartersService) { }
 
   ngOnInit(): void {
     this.dataSource = new StudentPointsDataSource(this.studentPointService)
-    this.dataSource.loadStudentPoints(1, 5)
+
+    this.dataSource.loadStudentPoints(1, 5, this.user_id, this.event_time_id, this.quarter_range_id)
+    // gets the current quarter for filtering it
+    this.quarterService.getCurrentQuarter().subscribe((data) => {
+      if (data) {
+        this.quarter_name = data.quarter.quarter;
+        this.quarter_range_id = data.id.toString();
+        this.dataSource.loadStudentPoints(1, 5, this.user_id, this.event_time_id, this.quarter_range_id)
+      }
+    })
 
     // checks if admin and sets to var
     // would remove actions from columns to display if not admin
-    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => {this.isAdmin=false; this.columnsToDisplay.pop()})
+    this.authService.isAdmin().subscribe(() => this.isAdmin = true, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
   }
 
   // to open create student point dialog and loads quarter range after

@@ -28,6 +28,8 @@ const routes: Routes = [
   { path: 'add-point', loadChildren: () => import('./add-point/add-point.module').then(m => m.AddPointModule), canActivate:[StaffGuard], canLoad: [StaffGuard] },
     // adding point is lazy loaded so would only activate/load when user is logged in
   { path: 'prizes', loadChildren: () => import('./prizes/prizes.module').then(m => m.PrizesModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
+  // lazy load when user is logged in
+  { path: 'winners', loadChildren: () => import('./winners/winners.module').then(m => m.WinnersModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
 ];
 
 @NgModule({

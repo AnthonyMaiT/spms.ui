@@ -6,12 +6,12 @@
       <a mat-button routerLink="/">Student Points Management System</a>
       <a mat-button *ngIf="isStaff" routerLink="/add-point">Add Point</a>
       <a mat-button routerLink="/student-points">Student Point Records</a>
+      <a mat-button routerLink="/winners">Winners</a>
+      <a mat-button routerLink="/prizes">Prizes</a>
       <button mat-button [matMenuTriggerFor]="event" aria-label="Events">
         <span>Event</span>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
-      <a mat-button routerLink="/winners">Winners</a>
-      <a mat-button routerLink="/prizes">Prizes</a>
       <mat-menu #event="matMenu" xPosition="after">
         <button mat-menu-item routerLink="/event-times">Event Times</button>
         <button mat-menu-item routerLink="/event">Events</button>

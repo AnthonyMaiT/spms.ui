@@ -43,7 +43,6 @@ export class StudentPointsComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = new StudentPointsDataSource(this.studentPointService)
 
-    this.dataSource.loadStudentPoints(1, 5, this.user_id, this.event_time_id, this.quarter_range_id)
     // gets the current quarter for filtering it
     this.quarterService.getCurrentQuarter().subscribe((data) => {
       if (data) {
@@ -51,6 +50,8 @@ export class StudentPointsComponent implements OnInit {
         this.quarter_range_id = data.id.toString();
         this.dataSource.loadStudentPoints(1, 5, this.user_id, this.event_time_id, this.quarter_range_id)
       }
+    }, (error) => {
+      this.dataSource.loadStudentPoints(1, 5)
     })
 
     // checks if admin and sets to var

@@ -1,1 +1,51 @@
-<p>hello world</p>
+<!-- if there are no winners for the past quarter -->
+<div *ngIf="!winners">
+    <div class="text-center py-5">
+        <h1>Welcome to the Student Points Management System!</h1>
+    </div>
+</div>
+<!-- shows a carousel to the user on the past winners -->
+<carousel [showIndicators]="false" *ngIf="winners">
+    <slide *ngFor="let winner of winners">
+        <div class="text-center py-5">
+            <h1><strong>CONGRATULATION {{winner.quarter_range.quarter.quarter | uppercase}} WINNERS</strong></h1>
+            <div class="lead">
+                <h3>{{winner.quarter_range.start_range | date:'longDate'}} - {{winner.quarter_range.end_range |
+                    date:'longDate'}}</h3>
+                <p>Congratulations to <strong>{{winner.user.first_name}} {{winner.user.last_name}}</strong> of
+                    {{winner.user.grade}}th Grade earning {{winner.points}} point(s)!!!</p>
+                <p>They won a(n) {{winner.prize.name}}!!!</p>
+                <p *ngIf="winner.top_points==true">This student received the most amount of points for the quarter!</p>
+                <p *ngIf="winner.top_points==false">This student is a winner for their grade!</p>
+            </div>
+        </div>
+    </slide>
+</carousel>
+<!-- when there is no leaderboard for the current quarter -->
+<div class="text-center py-5" *ngIf="!points">
+    <h1>There is no quarter set for the current date</h1>
+</div>
+<!-- shows the current standings for the current quarter -->
+<mat-card class="text-center" *ngIf="points">
+    <h2>Current Standings</h2>
+    <p *ngIf="showCurrentPoints">Your current points are <strong>{{userPoints}}</strong></p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let point of points; let i=index">
+                <td>{{i+1}}</td>
+                <td>{{point.User.first_name}} {{point.User.last_name}}</td>
+                <td>{{point.User.grade}}</td>
+                <td>{{point.points}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination [totalItems]="pagedPoints.total" [itemsPerPage]="5" (pageChanged)="pageChanged($event)"></pagination>
+</mat-card>

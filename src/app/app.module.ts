@@ -26,6 +26,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
 import { ProfileComponent } from './app-nav/profile/profile.component';
 import { EventModule } from './events/event/event.module';
+import {CarouselModule} from 'ngx-bootstrap/carousel';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { EventModule } from './events/event/event.module';
     MatCardModule,
     MatDialogModule,
     MatSnackBarModule,
-    EventModule
+    EventModule,
+    CarouselModule,
+    PaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

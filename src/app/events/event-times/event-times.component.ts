@@ -41,7 +41,6 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   // when app is ran, load datasource
   ngOnInit(): void {
     this.dataSource = new EventTimesDataSource(this.eventTimeService)
-    this.dataSource.loadEventTimes(1, 5, this.event_id, this.quarter_range_id)
     // gets the current quarter for filter
     this.quarterService.getCurrentQuarter().subscribe((data) => {
       if (data) {
@@ -49,7 +48,9 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
         this.quarter_range_id = data.id.toString();
         this.dataSource.loadEventTimes(1, 5, this.event_id, this.quarter_range_id)
       }
-    })
+    }, (error) => {
+      this.dataSource.loadEventTimes(1, 5)
+    }) 
 
     //checks if admin and sets to var
     // would remove actions from columns to display

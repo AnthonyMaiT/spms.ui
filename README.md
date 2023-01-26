@@ -1,6 +1,6 @@
-# SPMS API Backend
+# Student Point Management System App
 
-This project was created using [Python 3.11.1](https://docs.python.org/3/) in Windows 11
+This project was created using [Python 3.11.1](https://docs.python.org/3/) and [Angular](https://angular.io/) in Windows 11
 
 ## Prerequisites
 

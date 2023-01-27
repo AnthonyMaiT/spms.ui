@@ -49,9 +49,6 @@
             <mat-label>Quarter</mat-label>
             <mat-form-field appearance="fill" [style.width.%]=100>
                 <input type="text" matInput [(ngModel)]="quarter_name" disabled [ngModelOptions]="{standalone: true}">
-                <button mat-icon-button matSuffix type="button" (click)="removeQuarterFilter()">
-                    <mat-icon>remove_circle_outline</mat-icon>
-                </button>
                 <button mat-icon-button matSuffix type="button" (click)="openSelectQuarterRange()">
                     <mat-icon>search</mat-icon>
                 </button>
@@ -59,6 +56,34 @@
         </div>
     </div>
 </div>
+
+<!-- when there is no leaderboard for the current quarter -->
+<div class="text-center py-5" *ngIf="!points">
+    <h1>There is no points for the selected quarter</h1>
+</div>
+<!-- shows the current standings for the current quarter -->
+<mat-card *ngIf="points" class="mb-3">
+    <h2 class="text-center">Standings for {{quarter_name}}</h2>
+    <p class="text-center" *ngIf="showCurrentPoints">Your points are <strong>{{userPoints}}</strong></p>
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let point of points">
+                <td>{{point.User.first_name}} {{point.User.last_name}}</td>
+                <td>{{point.User.grade}}</td>
+                <td>{{point.points}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination class="justify-content-center" [totalItems]="pagedPoints.total" [itemsPerPage]="5" [maxSize]="5" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+</mat-card>
 
 <!-- datatable -->
 <div class="mat-elevation-z8">

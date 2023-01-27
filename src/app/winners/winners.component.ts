@@ -21,7 +21,7 @@ export class WinnersComponent implements OnInit {
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed in db
-  displayedColumns: string[] = ['id', 'first_name', 'last_name', 'top_points', 'points', 'prize', 'quarter', 'actions'];
+  displayedColumns: string[] = ['id', 'first_name', 'last_name','grade', 'top_points', 'points', 'prize', 'quarter', 'actions'];
   // for displaying/not displaying actions column
   columnsToDisplay: string[] = this.displayedColumns.slice()
   // datasource of table

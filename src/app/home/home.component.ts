@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { QuarterRange } from '../quarters/interfaces/quarter-range';
 import { QuartersService } from '../quarters/services/quarters.service';
 import { AuthService } from '../services/auth.service';
 import { LeaderboardService } from '../services/leaderboard.service';
@@ -17,24 +18,41 @@ export class HomeComponent implements OnInit {
 
   // for returning user points and past winners
   pagedPoints!: PagedUserPoints
-  points!: UserPoints[] 
+  points!: UserPoints[]
   winners!: Winner[]
   userPoints: number = 0
   // used to show user points
   showCurrentPoints = true;
+  currentQuarter!: QuarterRange
 
-  constructor(private leaderboardService: LeaderboardService) { }
+  constructor(private leaderboardService: LeaderboardService, private quartersService: QuartersService) { }
 
   ngOnInit(): void {
-    // gets the leaderboard from the service and set to var
-    this.leaderboardService.getLeaderboard().subscribe((data) => {
-      if (data) {
-        this.pagedPoints = data
-        this.points = data.items
-      }
-    }, (error) => {
-      
+    // gets current quarter for leaderboard data
+    this.quartersService.getCurrentQuarter().subscribe((data) => {
+      this.currentQuarter = data
+      // gets the leaderboard from the service and set to var
+      this.leaderboardService.getLeaderboard(1, 5, this.currentQuarter.id.toString()).subscribe((data) => {
+        if (data) {
+          this.pagedPoints = data
+          this.points = data.items
+        }
+      }, (error) => {
+
+      })
+      // gets the current user points if there are any
+      this.leaderboardService.getUserPoints(this.currentQuarter.id.toString()).subscribe((data) => {
+        this.userPoints = data.points
+        this.showCurrentPoints = true
+      }, (error) => {
+        if (error.error.detail == 'No student points found for user') {
+          this.showCurrentPoints = true
+        } else {
+          this.showCurrentPoints = false;
+        }
+      })
     })
+
     // gets the past quarter from service then get past winner with the quarter
     this.leaderboardService.getPastQuarter().subscribe((data) => {
       if (data) {
@@ -43,23 +61,12 @@ export class HomeComponent implements OnInit {
         })
       }
     }, (error) => {
-      
-    })
-    // gets the current user points if there are any
-    this.leaderboardService.getCurrentUserPoints().subscribe((data) => {
-      this.userPoints = data.points
-      this.showCurrentPoints = true
-    }, (error) => {
-      if (error.error.detail == 'No student points found for user') {
-        this.showCurrentPoints = true
-      } else {
-        this.showCurrentPoints = false;
-      }
+
     })
   }
   // for ngx-pagination
   pageChanged(event: PageChangedEvent) {
-    this.leaderboardService.getLeaderboard(event.page, event.itemsPerPage).subscribe((data) => {
+    this.leaderboardService.getLeaderboard(event.page, event.itemsPerPage, this.currentQuarter.id.toString()).subscribe((data) => {
       if (data) {
         this.pagedPoints = data
         this.points = data.items

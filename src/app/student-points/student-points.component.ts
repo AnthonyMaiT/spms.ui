@@ -1,13 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { debounceTime, tap } from 'rxjs';
 import { QuartersService } from '../quarters/services/quarters.service';
 import { AuthService } from '../services/auth.service';
+import { LeaderboardService } from '../services/leaderboard.service';
 import { EventTimeSelectorComponent } from '../shared/event-time-selector/event-time-selector.component';
 import { QuarterRangeSelectorComponent } from '../shared/quarter-range-selector/quarter-range-selector.component';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { UserSelectorComponent } from '../shared/user-selector/user-selector.component';
+import { PagedUserPoints } from '../users/interfaces/paged-user-points';
+import { UserPoints } from '../users/interfaces/user-points';
+import { Winner } from '../winners/interfaces/Winner';
 import { CreateEditStudentPointComponent } from './create-edit-student-point/create-edit-student-point.component';
 import { StudentPoint } from './interfaces/StudentPoint';
 import { StudentPointsService } from './services/student-points.service';
@@ -18,7 +24,7 @@ import { StudentPointsDataSource } from './student-point.datasource';
   templateUrl: './student-points.component.html',
   styleUrls: ['./student-points.component.scss']
 })
-export class StudentPointsComponent implements OnInit {
+export class StudentPointsComponent implements OnInit, AfterViewInit {
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed in db
@@ -34,11 +40,18 @@ export class StudentPointsComponent implements OnInit {
   user_id: string = ''
   event_time_id: string = ''
   quarter_range_id: string = ''
+
+  pagedPoints!: PagedUserPoints
+  points!: UserPoints[]
+  userPoints: number = 0
+  // used to show user points
+  showCurrentPoints = true;
+
   // for pagination
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private studentPointService: StudentPointsService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar, private quarterService: QuartersService) { }
+    private snackBar: MatSnackBar, private quarterService: QuartersService, private leaderboardService: LeaderboardService) { }
 
   ngOnInit(): void {
     this.dataSource = new StudentPointsDataSource(this.studentPointService)
@@ -49,14 +62,41 @@ export class StudentPointsComponent implements OnInit {
         this.quarter_name = data.quarter.quarter;
         this.quarter_range_id = data.id.toString();
         this.dataSource.loadStudentPoints(1, 5, this.user_id, this.event_time_id, this.quarter_range_id)
+
+        // gets the leaderboard from the service and set to var
+        this.leaderboardService.getLeaderboard(1, 5, data.id.toString()).subscribe((data) => {
+          if (data) {
+            this.pagedPoints = data
+            this.points = data.items
+          }
+        }, (error) => {
+
+        })
+        // gets the current user points if there are any
+        this.leaderboardService.getUserPoints(data.id.toString()).subscribe((data) => {
+          this.userPoints = data.points
+          this.showCurrentPoints = true
+        }, (error) => {
+          if (error.error.detail == 'No student points found for user') {
+            this.showCurrentPoints = true
+          } else {
+            this.showCurrentPoints = false;
+          }
+        })
       }
     }, (error) => {
-      this.dataSource.loadStudentPoints(1, 5)
+      this.dataSource.loadStudentPoints(1, 5, '0')
     })
 
     // checks if admin and sets to var
     // would remove actions from columns to display if not admin
     this.authService.isAdmin().subscribe(() => this.isAdmin = true, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
+  }
+
+  ngAfterViewInit() {
+    // would be delayed by 100 ms after paginator events happen then would load events 
+    this.paginator.page.pipe(debounceTime(100),
+      tap(() => this.loadStudentPoints())).subscribe()
   }
 
   // to open create student point dialog and loads quarter range after
@@ -133,6 +173,26 @@ export class StudentPointsComponent implements OnInit {
       if (data) {
         this.quarter_name = data.quarter.quarter
         this.quarter_range_id = data.id
+        // gets the leaderboard from the service and set to var
+        this.leaderboardService.getLeaderboard(1, 5, data.id.toString()).subscribe((data) => {
+          if (data) {
+            this.pagedPoints = data
+            this.points = data.items
+          }
+        }, (error) => {
+
+        })
+        // gets the current user points if there are any
+        this.leaderboardService.getUserPoints(data.id.toString()).subscribe((data) => {
+          this.userPoints = data.points
+          this.showCurrentPoints = true
+        }, (error) => {
+          if (error.error.detail == 'No student points found for user') {
+            this.showCurrentPoints = true
+          } else {
+            this.showCurrentPoints = false;
+          }
+        })
         this.loadStudentPoints()
       }
     })
@@ -163,11 +223,15 @@ export class StudentPointsComponent implements OnInit {
     this.user_id = ''
     this.loadStudentPoints()
   }
-  // removes quarter filter
-  removeQuarterFilter() {
-    this.quarter_name = ''
-    this.quarter_range_id = ''
-    this.loadStudentPoints()
+
+  // for ngx-pagination
+  pageChanged(event: PageChangedEvent) {
+    this.leaderboardService.getLeaderboard(event.page, event.itemsPerPage, this.quarter_range_id).subscribe((data) => {
+      if (data) {
+        this.pagedPoints = data
+        this.points = data.items
+      }
+    })
   }
 
 }

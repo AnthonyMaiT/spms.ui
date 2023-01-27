@@ -26,26 +26,25 @@
     <h1>There is no quarter set for the current date</h1>
 </div>
 <!-- shows the current standings for the current quarter -->
-<mat-card class="text-center" *ngIf="points">
-    <h2>Current Standings</h2>
-    <p *ngIf="showCurrentPoints">Your current points are <strong>{{userPoints}}</strong></p>
-    <table class="table table-striped">
+<mat-card *ngIf="points">
+    <h2 class="text-center">Current Standings</h2>
+    <p class="text-center" *ngIf="showCurrentPoints">Your current points are <strong>{{userPoints}}</strong></p>
+    <table class="table table-striped text-center">
         <thead>
             <tr>
-                <th>Place</th>
                 <th>Name</th>
                 <th>Grade</th>
                 <th>Points</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let point of points; let i=index">
-                <td>{{i+1}}</td>
+            <tr *ngFor="let point of points">
                 <td>{{point.User.first_name}} {{point.User.last_name}}</td>
                 <td>{{point.User.grade}}</td>
                 <td>{{point.points}}</td>
             </tr>
         </tbody>
     </table>
-    <pagination [totalItems]="pagedPoints.total" [itemsPerPage]="5" (pageChanged)="pageChanged($event)"></pagination>
+    <pagination class="justify-content-center" [totalItems]="pagedPoints.total" [itemsPerPage]="5" [maxSize]="5" (pageChanged)="pageChanged($event)" [boundaryLinks]="true"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
 </mat-card>

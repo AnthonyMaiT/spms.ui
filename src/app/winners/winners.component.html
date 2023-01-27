@@ -69,6 +69,12 @@
             <th mat-header-cell *matHeaderCellDef> Last Name </th>
             <td mat-cell *matCellDef="let row"> {{row.user.last_name}} </td>
         </ng-container>
+        <!-- grade column -->
+        <ng-container matColumnDef="grade">
+            <th mat-header-cell *matHeaderCellDef> Grade </th>
+            <td mat-cell *matCellDef="let row"> {{row.user.grade}} </td>
+        </ng-container>
+        <!-- had the top number of points -->
         <ng-container matColumnDef="top_points">
             <th mat-header-cell *matHeaderCellDef> Top Points </th>
             <td mat-cell *matCellDef="let row"> {{row.top_points}} </td>

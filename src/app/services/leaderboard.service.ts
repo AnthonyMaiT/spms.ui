@@ -14,10 +14,11 @@ export class LeaderboardService {
   constructor(private http: HttpClient) { }
 
   // gets the leaderboard for the current quarter that is paginated
-  getLeaderboard(pagedIndex: number = 1, pageSize: number = 5) {
-    return this.http.get<PagedUserPoints>(environment.apiUrl+'/current-leaderboards', {withCredentials: true,
+  getLeaderboard(pagedIndex: number = 1, pageSize: number = 5, quarter_range_id: string = '0') {
+    return this.http.get<PagedUserPoints>(environment.apiUrl+'/leaderboards', {withCredentials: true,
       params: new HttpParams().set('page', pagedIndex)
                               .set('size', pageSize)
+                              .set('quarter_range_id', quarter_range_id)
     })
   }
   // gets the past quarter from api
@@ -31,8 +32,10 @@ export class LeaderboardService {
     })
   }
   // gets the current user's amount of points
-  getCurrentUserPoints() {
-    return this.http.get<UserPoints>(environment.apiUrl+'/current-points', {withCredentials: true})
+  getUserPoints(quarter_range_id: string = '') {
+    return this.http.get<UserPoints>(environment.apiUrl+'/user-points', {withCredentials: true,
+      params: new HttpParams().set('quarter_range_id', quarter_range_id)
+    })
   }
 
 

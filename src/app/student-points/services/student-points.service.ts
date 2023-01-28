@@ -33,4 +33,9 @@ export class StudentPointsService {
   deleteStudentPoint(id:number) {
     return this.http.delete(environment.apiUrl+`/student-points/${id}`, {withCredentials: true})
   }
+
+  // used to export user points into excel and download to user
+  exportUserPoints(quarter_range_id: string ='') {
+    return this.http.get(environment.apiUrl+'/student-points/export', {withCredentials: true, params: new HttpParams().set('quarter_range_id', quarter_range_id), responseType: "blob", observe:'response'})
+  }
 }

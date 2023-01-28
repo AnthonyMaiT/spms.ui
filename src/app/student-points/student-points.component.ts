@@ -234,4 +234,26 @@ export class StudentPointsComponent implements OnInit, AfterViewInit {
     })
   }
 
+  // service calls for data
+  exportUserPoint() {
+    this.studentPointService.exportUserPoints(this.quarter_range_id).subscribe((data) => {
+      this.downloadFile(data)
+    })
+  }
+
+  // used to download file
+  downloadFile(data: any) {
+    // get the file name from the response
+    let header_content = data.headers.get('content-disposition')
+    let file = header_content.split('=')[1]
+    // make a blob to export the data (excel file) to user
+    const blob = new Blob([data.body], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+    const url = window.URL.createObjectURL(blob);
+    // creates a link to for the name and content of file and downloads to user
+    var link = document.createElement('a');
+    link.href = url
+    link.download = file
+    link.click()
+  }
+
 }

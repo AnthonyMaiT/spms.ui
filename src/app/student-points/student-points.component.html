@@ -9,8 +9,13 @@
         <div class="col">
             <span color="accent">Student Point Records Info and Actions</span>
         </div>
-        <!-- would open dialog to create CUSTOM student point only for admins -->
         <div class="col action" *ngIf="isAdmin">
+            <!-- would download excel file of student points for the quarter -->
+            <button mat-raised-button color="accent" (click)="exportUserPoint()">
+                <mat-icon>bar_chart</mat-icon>
+                Export Points to Excel
+            </button>
+            <!-- would open dialog to create CUSTOM student point only for admins -->
             <button mat-raised-button color="primary" (click)="createStudentPoint()">
                 <mat-icon>add</mat-icon>
                 Add Custom Point

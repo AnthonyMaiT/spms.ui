@@ -1,9 +1,12 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, DoCheck } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { ChatbotService } from './services/chatbot.service';
-import { PredictMessage } from './predict'
+import { PredictMessage } from './interfaces/predict'
+import { CreateUserStep } from './user-step/interfaces/createUserStep';
+import { User } from './users/interfaces/user';
+import { UserStepsService } from './user-step/services/user-steps.service';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +25,20 @@ export class AppComponent implements DoCheck {
   userMessage = ""
 
   // router to check page and chat service for chatbot
-  constructor(private route: Router, private chabbotService: ChatbotService) { }
+  constructor(private route: Router, private chabbotService: ChatbotService, private authService: AuthService, private userStepService: UserStepsService) {
+    // this would log user steps when a page is visited and route has changed
+    this.route.events.subscribe((event)=> {
+      if (event instanceof NavigationEnd) {
+        if (this.authService.userValue.id) {
+          const step: CreateUserStep = {
+            user_id: this.authService.userValue.id,
+            step: this.route.url
+          }
+          this.userStepService.createStep(step).subscribe()
+        }
+      }
+    })
+   }
 
   // checks page for certain criterias
   ngDoCheck(): void {

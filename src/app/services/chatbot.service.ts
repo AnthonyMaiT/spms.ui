@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BotMessage } from '../botMessage';
-import { PredictMessage } from '../predict';
+import { BotMessage } from '../interfaces/botMessage';
+import { PredictMessage } from '../interfaces/predict';
 
 @Injectable({
   providedIn: 'root'

@@ -28,7 +28,8 @@ import { ProfileComponent } from './app-nav/profile/profile.component';
 import { EventModule } from './events/event/event.module';
 import {CarouselModule} from 'ngx-bootstrap/carousel';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ErrorInterceptor } from './error.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ErrorInterceptor } from './error.interceptor';
     LoginComponent,
     HomeComponent,
     ChangePasswordComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotfoundComponent
   ],
   imports: [
     // imports certain modules to use some functionality

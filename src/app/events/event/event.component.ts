@@ -9,6 +9,7 @@ import { EventService } from './services/event.service';
 import { SchoolEvent } from './interfaces/event';
 import { MatPaginator } from '@angular/material/paginator';
 import { debounceTime, tap } from 'rxjs';
+import { User } from 'src/app/users/interfaces/user';
 
 @Component({
   selector: 'spms-event',
@@ -16,6 +17,8 @@ import { debounceTime, tap } from 'rxjs';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, AfterViewInit {
+
+  user!: User
 
   // checks if the current user is admin for features
   isAdmin: boolean = false
@@ -29,7 +32,7 @@ export class EventComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private eventService: EventService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) { this.user = this.authService.userValue }
   // when app is ran, load datasource
   ngOnInit(): void {
     this.dataSource = new EventsDataSource(this.eventService)
@@ -37,8 +40,11 @@ export class EventComponent implements OnInit, AfterViewInit {
 
     //checks if admin and sets to var
     // would remove actions from columns to display
-    this.authService.isAdmin().subscribe(() => { this.isAdmin = true }, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
-  }
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }    }
 
   ngAfterViewInit() {
     // would be delayed by 100 ms after paginator events happen then would load events 

@@ -13,7 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { LoginComponent } from './login/login.component'; 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatFormFieldModule} from '@angular/material/form-field'; 
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatInputModule} from '@angular/material/input';
@@ -28,6 +28,7 @@ import { ProfileComponent } from './app-nav/profile/profile.component';
 import { EventModule } from './events/event/event.module';
 import {CarouselModule} from 'ngx-bootstrap/carousel';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ErrorInterceptor } from './error.interceptor';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     CarouselModule,
     PaginationModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

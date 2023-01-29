@@ -14,6 +14,7 @@
                         <mat-option *ngFor="let quarter of getQuarters$ | async"
                             [value]="quarter.id">{{quarter.quarter}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="quarterRangeForm.get('quarter_id')?.hasError('required')">Quarter is required!</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -26,6 +27,7 @@
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="quarterRangeForm.get('start_range')?.hasError('required')">Start range is required!</mat-error>
                   </mat-form-field>                  
             </div>
             <!-- end range field with datepicker -->
@@ -36,6 +38,7 @@
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error *ngIf="quarterRangeForm.get('end_range')?.hasError('required')">End range is required!</mat-error>
                   </mat-form-field>   
             </div>
             <!-- error when end date less than start date -->

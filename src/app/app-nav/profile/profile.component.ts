@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from 'src/app/users/interfaces/user';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -9,14 +10,19 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor(private authService: AuthService, private route: Router) { }
-  // in order to get user async without having to unsubscribe
-  user$ = this.authService.getUser$
+  user!: User;
 
-  isAdmin = false
+  constructor(private authService: AuthService, private route: Router) { this.user = this.authService.userValue }
+  // in order to get user async without having to unsubscribe
+
+  isStaff = false
 
   ngOnInit(): void {
-    this.authService.isAdmin().subscribe(()=>this.isAdmin=true, ()=>this.isAdmin=false)
+    if (this.user) {
+      if (this.user.role_type_id == 1 || this.user.role_type_id == 2) {
+        this.isStaff = true
+      }
+    }  
   }
 
   // goes back to parent page

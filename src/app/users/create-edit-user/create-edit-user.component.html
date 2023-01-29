@@ -10,6 +10,7 @@
                 <mat-form-field>
                     <mat-label>Username</mat-label>
                     <input matInput formControlName="username">
+                    <mat-error *ngIf="userForm.get('username')?.hasError('required')">Username is required!</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-6 mb-3">
@@ -21,6 +22,7 @@
                         [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
+                    <mat-error *ngIf="userForm.get('password')?.hasError('required')">Password is required!</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -30,6 +32,7 @@
                 <mat-form-field>
                     <mat-label>First Name</mat-label>
                     <input type="text" matInput formControlName="first_name">
+                    <mat-error *ngIf="userForm.get('first_name')?.hasError('required')">First name is required!</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-6 mb-3">
@@ -37,6 +40,7 @@
                 <mat-form-field class="test">
                     <mat-label>Last Name</mat-label>
                     <input type="text" matInput formControlName="last_name">
+                    <mat-error *ngIf="userForm.get('last_name')?.hasError('required')">Last name is required!</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -49,6 +53,7 @@
                         <mat-option *ngFor="let role_type of getRoleTypes$ | async"
                             [value]="role_type.id">{{role_type.role_type}}</mat-option>
                     </mat-select>
+                    <mat-error *ngIf="userForm.get('role_type_id')?.hasError('required')">Role type is required!</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-6 mb-3" *ngIf="userForm.get('grade')">
@@ -62,6 +67,7 @@
                             <mat-option [value]="11">11th Grade</mat-option>
                             <mat-option [value]="12">12th Grade</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="userForm.get('grade')?.hasError('required')">Grade is required!</mat-error>
                     </mat-form-field>
                 </div>
             </div>

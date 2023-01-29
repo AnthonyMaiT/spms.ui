@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { EventSelectorComponent } from 'src/app/shared/event-selector/event-selector.component';
 import { QuarterRangeSelectorComponent } from 'src/app/shared/quarter-range-selector/quarter-range-selector.component';
 import { UserConfirmationDialogComponent } from 'src/app/shared/user-confirmation-dialog/user-confirmation-dialog.component';
+import { User } from 'src/app/users/interfaces/user';
 import { CreateUpdateEventTimesComponent } from './create-update-event-times/create-update-event-times.component';
 import { EventTimesDataSource } from './event-times.datasource';
 import { EventTime } from './interfaces/event-time';
@@ -19,6 +20,7 @@ import { EventTimesService } from './services/event-times.service';
   styleUrls: ['./event-times.component.scss']
 })
 export class EventTimesComponent implements OnInit, AfterViewInit {
+  user!: User;
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed on datatable
@@ -36,7 +38,7 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private eventTimeService: EventTimesService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar, private quarterService: QuartersService) { }
+    private snackBar: MatSnackBar, private quarterService: QuartersService) { this.user = this.authService.userValue }
 
   // when app is ran, load datasource
   ngOnInit(): void {
@@ -54,7 +56,11 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
 
     //checks if admin and sets to var
     // would remove actions from columns to display
-    this.authService.isAdmin().subscribe(() => { this.isAdmin = true }, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }  
   }
 
   ngAfterViewInit() {

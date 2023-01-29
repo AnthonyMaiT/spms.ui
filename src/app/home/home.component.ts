@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { LeaderboardService } from '../services/leaderboard.service';
 import { PagedStudentPoint } from '../student-points/interfaces/PagedStudentPoint';
 import { PagedUserPoints } from '../users/interfaces/paged-user-points';
+import { User } from '../users/interfaces/user';
 import { UserPoints } from '../users/interfaces/user-points';
 import { Winner } from '../winners/interfaces/Winner';
 
@@ -16,6 +17,8 @@ import { Winner } from '../winners/interfaces/Winner';
 })
 export class HomeComponent implements OnInit {
 
+  user!: User;
+
   // for returning user points and past winners
   pagedPoints!: PagedUserPoints
   points!: UserPoints[]
@@ -25,7 +28,7 @@ export class HomeComponent implements OnInit {
   showCurrentPoints = true;
   currentQuarter!: QuarterRange
 
-  constructor(private leaderboardService: LeaderboardService, private quartersService: QuartersService) { }
+  constructor(private leaderboardService: LeaderboardService, private quartersService: QuartersService, private authService: AuthService) { this.user = this.authService.userValue }
 
   ngOnInit(): void {
     // gets current quarter for leaderboard data
@@ -41,16 +44,20 @@ export class HomeComponent implements OnInit {
 
       })
       // gets the current user points if there are any
-      this.leaderboardService.getUserPoints(this.currentQuarter.id.toString()).subscribe((data) => {
-        this.userPoints = data.points
-        this.showCurrentPoints = true
-      }, (error) => {
-        if (error.error.detail == 'No student points found for user') {
+      if (this.user.role_type_id == 3) {
+        this.leaderboardService.getUserPoints(this.currentQuarter.id.toString()).subscribe((data) => {
+          this.userPoints = data.points
           this.showCurrentPoints = true
-        } else {
-          this.showCurrentPoints = false;
-        }
-      })
+        }, (error) => {
+          if (error.error.detail == 'No student points found for user') {
+            this.showCurrentPoints = true
+          } else {
+            this.showCurrentPoints = false;
+          }
+        })
+      } else {
+        this.showCurrentPoints = false
+      }
     })
 
     // gets the past quarter from service then get past winner with the quarter

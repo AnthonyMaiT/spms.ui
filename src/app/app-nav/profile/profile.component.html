@@ -1,5 +1,5 @@
 <!-- gets user async and displays user data  -->
-<mat-card *ngIf="user$ | async as user" class="card">
+<mat-card *ngIf="user" class="card">
     <h1><strong>Profile</strong></h1>
     <mat-card-content>
         <div class="container">
@@ -33,7 +33,7 @@
                     {{user.edited_at | date}}
                 </div>
             </div>
-            <div class="row" *ngIf="!isAdmin">
+            <div class="row" *ngIf="!isStaff">
                 <div class="col-6 mb-3">
                     <h4><strong>Grade Level:</strong></h4>
                     {{user.grade}}

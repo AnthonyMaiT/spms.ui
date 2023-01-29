@@ -10,6 +10,7 @@
                 <mat-form-field>
                     <mat-label>Event Name</mat-label>
                     <input type="text" matInput formControlName="name">
+                    <mat-error *ngIf="eventForm.get('name')?.hasError('required')">Event name is required!</mat-error>
                 </mat-form-field>
             </div>
             <!-- is sport field -->

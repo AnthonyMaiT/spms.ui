@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
+import { User } from '../users/interfaces/user';
 import { CreateUpdatePrizesComponent } from './create-update-prizes/create-update-prizes.component';
 import { Prize } from './interfaces/Prizes';
 import { PrizesDataSource } from './prizes.datatable';
@@ -16,6 +17,7 @@ import { PrizesService } from './services/prizes.service';
   styleUrls: ['./prizes.component.scss']
 })
 export class PrizesComponent implements OnInit, AfterViewInit {
+  user!: User
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed on datatable
@@ -30,7 +32,8 @@ export class PrizesComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private prizesService: PrizesService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) { this.user = this.authService.userValue
+    }
   // when app is ran, run datatable
   ngOnInit(): void {
     this.dataSource = new PrizesDataSource(this.prizesService)
@@ -38,8 +41,11 @@ export class PrizesComponent implements OnInit, AfterViewInit {
 
     //checks if admin and sets to var
     // would remove actions from columns to display
-    this.authService.isAdmin().subscribe(() => { this.isAdmin = true }, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
-  }
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }    }
 
   ngAfterViewInit() {
     // would be delayed by 100 ms after paginator prizes happen then would load prizes 

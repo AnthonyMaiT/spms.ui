@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../services/auth.service';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
+import { User } from '../users/interfaces/user';
 import { CreateEditQuarterRangeComponent } from './create-edit-quarter-range/create-edit-quarter-range.component';
 import { QuarterRange } from './interfaces/quarter-range';
 import { QuarterRangesDataSource } from './quarters.datasource';
@@ -15,6 +16,8 @@ import { QuartersService } from './services/quarters.service';
   styleUrls: ['./quarters.component.scss']
 })
 export class QuartersComponent implements OnInit {
+
+  user!: User
 
   // checks if the current user is admin for features
   isAdmin: boolean = false
@@ -28,7 +31,8 @@ export class QuartersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private quarterService: QuartersService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {  this.user = this.authService.userValue
+    }
   // when app is ran, load datasource
   ngOnInit(): void {
     this.dataSource = new QuarterRangesDataSource(this.quarterService)
@@ -36,7 +40,11 @@ export class QuartersComponent implements OnInit {
 
     // checks if admin and sets to var
     // would remove actions from columns to display if not admin
-    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => {this.isAdmin=false; this.columnsToDisplay.pop()})
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }  
   }
   // to open create quarter range dialog and loads quarter range after
   createQuarterRange() {

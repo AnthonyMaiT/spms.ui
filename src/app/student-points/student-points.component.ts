@@ -12,6 +12,7 @@ import { QuarterRangeSelectorComponent } from '../shared/quarter-range-selector/
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { UserSelectorComponent } from '../shared/user-selector/user-selector.component';
 import { PagedUserPoints } from '../users/interfaces/paged-user-points';
+import { User } from '../users/interfaces/user';
 import { UserPoints } from '../users/interfaces/user-points';
 import { Winner } from '../winners/interfaces/Winner';
 import { CreateEditStudentPointComponent } from './create-edit-student-point/create-edit-student-point.component';
@@ -25,6 +26,7 @@ import { StudentPointsDataSource } from './student-point.datasource';
   styleUrls: ['./student-points.component.scss']
 })
 export class StudentPointsComponent implements OnInit, AfterViewInit {
+  user!: User
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed in db
@@ -51,7 +53,9 @@ export class StudentPointsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private studentPointService: StudentPointsService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar, private quarterService: QuartersService, private leaderboardService: LeaderboardService) { }
+    private snackBar: MatSnackBar, private quarterService: QuartersService, private leaderboardService: LeaderboardService) { 
+      this.user = this.authService.userValue
+    }
 
   ngOnInit(): void {
     this.dataSource = new StudentPointsDataSource(this.studentPointService)
@@ -72,17 +76,21 @@ export class StudentPointsComponent implements OnInit, AfterViewInit {
         }, (error) => {
 
         })
-        // gets the current user points if there are any
-        this.leaderboardService.getUserPoints(data.id.toString()).subscribe((data) => {
-          this.userPoints = data.points
-          this.showCurrentPoints = true
-        }, (error) => {
-          if (error.error.detail == 'No student points found for user') {
+        
+        if (this.user.role_type_id == 3) {
+          this.leaderboardService.getUserPoints(data.id.toString()).subscribe((data) => {
+            this.userPoints = data.points
             this.showCurrentPoints = true
-          } else {
-            this.showCurrentPoints = false;
-          }
-        })
+          }, (error) => {
+            if (error.error.detail == 'No student points found for user') {
+              this.showCurrentPoints = true
+            } else {
+              this.showCurrentPoints = false;
+            }
+          })
+        } else {
+          this.showCurrentPoints = false
+        }
       }
     }, (error) => {
       this.dataSource.loadStudentPoints(1, 5, '0')
@@ -90,7 +98,11 @@ export class StudentPointsComponent implements OnInit, AfterViewInit {
 
     // checks if admin and sets to var
     // would remove actions from columns to display if not admin
-    this.authService.isAdmin().subscribe(() => this.isAdmin = true, () => { this.isAdmin = false; this.columnsToDisplay.pop() })
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }
   }
 
   ngAfterViewInit() {

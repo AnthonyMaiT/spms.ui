@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Route, Router } from '@angular/router';
 import { catchError, of, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { User } from '../users/interfaces/user';
 
 @Component({
   selector: 'spms-login',
@@ -11,16 +12,22 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+  user!: User
+
   error = false; // for label to say credentials were incorrect
   username: string = ''; // stores username
   password: string = ''; // stores password
 
   // connects component to router and authservice
-  constructor(private route: Router, private authService: AuthService) { }
+  constructor(private route: Router, private authService: AuthService) { this.user = this.authService.userValue }
 
   ngOnInit(): void {
     // if user is already logged in
-    this.authService.currentUser().subscribe(() => {this.route.navigate(['/'])})
+    if (this.user) {
+      if (!this.user.id) {
+        this.route.navigate(['/'])
+      }
+    }
   }
 
   login() {

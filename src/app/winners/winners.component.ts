@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { QuarterRangeSelectorComponent } from '../shared/quarter-range-selector/quarter-range-selector.component';
 import { UserConfirmationDialogComponent } from '../shared/user-confirmation-dialog/user-confirmation-dialog.component';
 import { UserSelectorComponent } from '../shared/user-selector/user-selector.component';
+import { User } from '../users/interfaces/user';
 import { CreateWinnersComponent } from './create-winners/create-winners.component';
 import { Winner } from './interfaces/Winner';
 import { WinnersService } from './services/winners.service';
@@ -18,6 +19,7 @@ import { WinnersDataSource } from './winners.datasource';
   styleUrls: ['./winners.component.scss']
 })
 export class WinnersComponent implements OnInit {
+  user!: User;
   // checks if the current user is admin for features
   isAdmin: boolean = false
   // columns to be displayed in db
@@ -35,7 +37,7 @@ export class WinnersComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   // services and other components
   constructor(private winnerService: WinnersService, public dialog: MatDialog, private authService: AuthService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) { this.user = this.authService.userValue }
 
   ngOnInit(): void {
     this.dataSource = new WinnersDataSource(this.winnerService)
@@ -43,7 +45,11 @@ export class WinnersComponent implements OnInit {
 
     // checks if admin and sets to var
     // would remove actions from columns to display if not admin
-    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => {this.isAdmin=false; this.columnsToDisplay.pop()})
+    if (this.user) {
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+    }  
   }
 
   // load winners from datasource with pagination

@@ -20,6 +20,7 @@ import { UsersDataSource } from './users.datasource';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements AfterViewInit, OnInit {
+  user!: User;
   // column headers for datatable in html template
   displayedColumns: string[] = ['id', 'role_type', 'username', 'first_name',
     'last_name', 'grade', 'edited_at', 'created_at', 'actions'];
@@ -42,7 +43,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     private authService: AuthService,
     private snackBar: MatSnackBar
-  ) { }
+  ) { this.user = this.authService.userValue }
   // when called, would get users again and return to first page 
   applyFilter() {
     this.loadUsers()
@@ -51,7 +52,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     // when sort changes, resets back to first page
-    this.sort.sortChange.subscribe(() => {this.paginator.pageIndex = 0});
+    this.sort.sortChange.subscribe(() => { this.paginator.pageIndex = 0 });
     // would be delayed by 100 ms after paginator/sort events happen then would load users 
     merge(this.paginator.page, this.sort.sortChange)
       .pipe(
@@ -118,9 +119,9 @@ export class UsersComponent implements AfterViewInit, OnInit {
   }
   // deletes user from data
   deleteUser(id: number) {
-    // checks if deleting self and would return a snackbar if so
-    this.authService.currentUser().subscribe((data) => {
-      if (data.id == id) {
+    if (this.user) {
+      // checks if deleting self and would return a snackbar if so
+      if (this.user.id == id) {
         this.snackBar.open('Cannot Delete Self', '', {
           duration: 3000,
           horizontalPosition: 'right',
@@ -146,7 +147,8 @@ export class UsersComponent implements AfterViewInit, OnInit {
           }
         });
       }
-    })
+    }
+
   }
 
 }

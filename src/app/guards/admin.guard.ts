@@ -14,13 +14,27 @@ export class AdminGuard implements CanActivate, CanLoad {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.authService.isAdmin().subscribe(() => { }, (error) => this.router.navigate(['/']))
-    return true
+    const user = this.authService.userValue
+    if (user) {
+      if (user.role_type_id == 1) {
+        return true
+      } else {
+        this.router.navigate(['/'])
+      }
+    }
+    return false
   }
   canLoad(
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.authService.isAdmin().subscribe(() => { }, (error) => this.router.navigate(['/']))
-    return true
+    const user = this.authService.userValue
+    if (user) {
+      if (user.role_type_id == 1) {
+        return true
+      } else {
+        this.router.navigate(['/'])
+      }
+    }
+    return false
   }
 }

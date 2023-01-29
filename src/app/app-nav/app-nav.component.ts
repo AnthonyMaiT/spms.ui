@@ -12,11 +12,15 @@ import { User } from '../users/interfaces/user';
 })
 export class AppNavComponent implements OnInit {
 
+  user!: User;
+
   constructor(
     private authService: AuthService, 
     private route: Router,
     public dialog: MatDialog
-  ) { }
+  ) { 
+    this.user = this.authService.userValue
+  }
 
   // name for nav
   name:string = ''
@@ -25,12 +29,15 @@ export class AppNavComponent implements OnInit {
 
   ngOnInit(): void {
     // adds name from api to display on nav
-    this.authService.currentUser().subscribe((data) => {
-      this.name = data.first_name + ' ' + data.last_name
-    })
-    // checks for certain credentials of current user
-    this.authService.isAdmin().subscribe(()=> this.isAdmin = true, () => this.isAdmin=false)
-    this.authService.isStaff().subscribe(()=> this.isStaff = true, () => this.isStaff=false)
+    if (this.user) {
+      this.name = this.user.first_name + ' ' + this.user.last_name
+      if (this.user.role_type_id == 1) {
+        this.isAdmin = true
+      }
+      if (this.user.role_type_id == 2) {
+        this.isStaff = true
+      }
+    }
   }
 
   // used to access profile

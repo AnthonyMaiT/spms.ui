@@ -4,3 +4,38 @@
 <body class="wrapper">
     <router-outlet></router-outlet>
 </body>
+<!-- chatbot for user to talk to for help -->
+<div class="container" *ngIf="!hideToolBar">
+    <div class="chatbox">
+        <div class="chatbox__support chatbox--active" *ngIf="showChat">
+            <div class="chatbox__header mat-primary">
+                <div class="chatbox__content--header">
+                    <h4 class="chatbox__heading--header">Chat support</h4>
+                </div>
+            </div>
+            <div class="chatbox__messages">
+                <!-- messages of the bot and the user -->
+                <div *ngFor="let message of messages">
+                    <div *ngIf="message.name == 'Sam'">
+                        <div class="messages__item messages__item--visitor">{{message.message}}</div>
+                    </div>
+                    <div *ngIf="message.name == 'user'">
+                        <div class="messages__item messages__item--operator">{{message.message}}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- typing in a message for the bot -->
+            <div class="chatbox__footer">
+                <input type="text" placeholder="Write a message..." [(ngModel)]="userMessage" (keydown.enter)="sendMessage()">
+                <button mat-flat-button color="primary" (click)="sendMessage()">Send</button>
+            </div>
+        </div>
+        <!-- toggle on and off chat -->
+        <div class="chatbox__button">
+            <button mat-fab color="primary" (click)="toggleChat()">
+                <mat-icon *ngIf="!showChat">help</mat-icon>
+                <mat-icon *ngIf="showChat">close</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

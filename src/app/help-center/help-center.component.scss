@@ -1,0 +1,25 @@
+// side nav container
+.container {
+    width: 100%;
+    height: 800px;
+    background-color: white;
+    border: 1px solid rgba(224, 224, 224, 255);
+}
+
+// sidenav
+.sidenav {
+    width: 200px;
+}
+// header of the content
+.header {
+    margin-top: 10px;
+    margin-left: 30px;
+    font-size: 50px;
+    font-weight: 250;
+}
+// content of tab
+.content {
+    font-size: 20px;
+    margin-top: 50px;
+    margin-left: 50px;
+}

@@ -1,0 +1,551 @@
+<h1>Help Center</h1>
+
+<mat-sidenav-container class="container">
+    <!-- sidenav for help center tabs. Would set currentTab to whatever is pressed -->
+    <mat-sidenav mode="side" role="navigation" opened class="sidenav" [style.left.px]=0>
+        <mat-nav-list>
+            <mat-list-item (click)="currentTab = 'Home'">
+                <a matListItemTitle>Home</a>
+            </mat-list-item>
+            <mat-list-item (click)="currentTab = 'Points'">
+                <a matListItemTitle>Student Point</a>
+            </mat-list-item>
+            <mat-list-item (click)="currentTab = 'Winners'">
+                <a matListItemTitle>Winners</a>
+            </mat-list-item>
+            <mat-list-item (click)="currentTab = 'Prizes'">
+                <a matListItemTitle>Prizes</a>
+            </mat-list-item>
+            <mat-list-item (click)="currentTab = 'Events'">
+                <a matListItemTitle>Events</a>
+            </mat-list-item>
+            <mat-list-item (click)="currentTab = 'Quarters'">
+                <a matListItemTitle>Quarters</a>
+            </mat-list-item>
+            <mat-list-item *ngIf="isAdmin" (click)="currentTab = 'Users'">
+                <a matListItemTitle>Users</a>
+            </mat-list-item>
+            <mat-list-item *ngIf="isAdmin"  (click)="currentTab = 'Steps'">
+                <a matListItemTitle>User Steps</a>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <!-- content of the sidenav depending on the tab -->
+    <!-- content would help a user on each tab of the SPMS.ui page -->
+    <!-- each tab has a header and content  -->
+    <mat-sidenav-content>
+        <div *ngIf="currentTab == 'Home'">
+            <div class="header">
+                <span><strong>Help Center Home</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>Welcome to the help center home!<br> Where you may find help for each menu you see.<br>Click a menu
+                    to get started</p>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Points'">
+            <div class="header">
+                <span><strong>Student Point Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with student points!</p>
+                <p>Student Points are used to keep track if a student's attendance in an event. One event is one point
+                    for a student and points are resetted every quarter</p>
+                <mat-expansion-panel *ngIf="isStaff">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating a Point</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can add a student point in the "Add Point" Tab on the navigation toolbar
+                        </p>
+                        <ol>
+                            <li>Fill out the username field and press next</li>
+                            <li>If the username is valid you will see their details. If not valid, go back and fill in
+                                the username correctly. Press next when you see their details</li>
+                            <li>
+                                At this point, you will use a selector to select an ongoing event. If there are no
+                                ongoing events, there will be an error which won't allow you to go next.
+                                When you have selected an event, press next.
+                            </li>
+                            <li>
+                                You will then either see an error message or a success message. You can either go back
+                                if there was an error or reset the form.
+                            </li>
+                        </ol>
+                        <p *ngIf="isAdmin">
+                            Another way to add a point is doing it the custom way in the "Student Points Tab" with the
+                            top right button
+                        </p>
+                        <ol>
+                            <li>Press the magnifying glass where the User field is to select a user. Then select a user
+                            </li>
+                            <li>Press the magnifying glass where the Event Time field is to select an event time. Then
+                                select an event time</li>
+                            <li>Press Create. You may see an error message if user already in event.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing a point</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit a student point in "Student Point Records" tab and pressing the pencil icon on
+                            the far right of the datatable if there is a record you want to edit.
+                        </p>
+                        <ol>
+                            <li>Press the magnifying glass where the User field is to select a user. Then select a user
+                                to change</li>
+                            <li>Press the magnifying glass where the Event Time field is to select an event time. Then
+                                select an event time to change for the point</li>
+                            <li>Press Edit. You may see an error message if user already in event.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting a point</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete a student point in "Student Point Records" tab
+                        </p>
+                        <ol>
+                            <li>Press the trash can icon on the far right of the datatable if there is the record you
+                                want to delete</li>
+                            <li>Press the confirm button to confirm this action</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Exporting a point</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can export a student point in "Student Point Records" tab
+                        </p>
+                        <ol>
+                            <li>Select a quarter range you want to export points of with the magnifying glass under the
+                                quarter filter field</li>
+                            <li>Press the pink "Export Points to Excel" button to get a excel file to analyze or view
+                                data</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Winners'">
+            <div class="header">
+                <span><strong>Winners Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with student winners!</p>
+                <p>Winners are students who are either chosen at random for each grade or accumulated the most amount of
+                    points for the quarter range. They are also given a prize!</p>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating winners</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create winners in the "Winners" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create Winners" button</li>
+                            <li>Press the magnifying glass to select a quarter range to create winners from</li>
+                            <li>Press Create. If no winners are created, there will be an error.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing a winner's prize</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit the prize of winners in the "Winners" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Press the magnifying glass to select a prize you want the student to have</li>
+                            <li>Press Edit</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting winners</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete winners in the "Winners" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Prizes'">
+            <div class="header">
+                <span><strong>Prizes Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with prizes!</p>
+                <p>The prizes tab is to show what prizes are avaliable for winners</p>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating a prize</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create prize in the "Prizes" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create New Prize" button</li>
+                            <li>Type in a name of the prize you are giving out. Make sure it doesn't match any of the
+                                other prizes' names</li>
+                            <li>Select the level for the prize. Level 1- 0 to 4 points, Level 2 - 5 to 14 points, Level
+                                3 - 15+ points </li>
+                            <li>Press Create. If prize name matches another prize, it will return an error.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing a prize</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit prizes in the "Prizes" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Type in a name of the prize you are giving out. Make sure it doesn't match any of the
+                                other prizes' names</li>
+                            <li>Select the level for the prize. Level 1- 0 to 4 points, Level 2 - 5 to 14 points, Level
+                                3 - 15+ points </li>
+                            <li>Press Edit. If prize name matches another prize, it will return an error.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting a prize</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete a prize in the "Prizes" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Events'">
+            <div class="header">
+                <span><strong>Events Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with events!</p>
+                <p>You can look at event names and schedule an event at a set time</p>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating an event</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create an event in the "Events" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create New Event" button</li>
+                            <li>Type in a name of the event. Make sure it doesn't match any of the other events' names
+                            </li>
+                            <li>Toggle the is sport button</li>
+                            <li>Press Create. If the event matches another event, it will return an error.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing an event</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit an event in the "Events" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Type in a name of the event. Make sure it doesn't match any of the other events' names
+                            </li>
+                            <li>Toggle the is sport button</li>
+                            <li>Press Edit. If the event matches another event, it will return an error.</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting an event</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete an event in the "Events" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Setting up an event time</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create an event time in the "Event Times" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create New Event Time" button</li>
+                            <li>Press the magnifying glass to select an event name</li>
+                            <li>Then select the start time and end time of the event. Make sure the start time is less
+                                than end time</li>
+                            <li>Press Create</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing an event time</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit an event time in the "Event Times" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Press the magnifying glass to select an event name</li>
+                            <li>Then select the start time and end time of the event. Make sure the start time is less
+                                than end time</li>
+                            <li>Press Edit</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting an event time</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete an event time in the "Event Times" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Quarters'">
+            <div class="header">
+                <span><strong>Quarters Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with quarters!</p>
+                <p>Student points, event times and winners are dependent on the quarter they are in. Set a quarter to add event times and points.</p>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating a quarter</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create an event in the "Quarters" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create New Quarter Range" button</li>
+                            <li>Select the name of the quarter you are creating</li>
+                            <li>Select the start and end date of the quarter. Make sure the start date is less than the end date. Also make sure they don't conflict with other quarters</li>
+                            <li>Press Create. You would see an error message if quarter ranges conflict with each other</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing a quarter</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit a quarter in the "Quarters" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Select the name of the quarter you are editing</li>
+                            <li>Select the start and end date of the quarter. Make sure the start date is less than the end date. Also make sure they don't conflict with other quarters</li>
+                            <li>Press Edit. You would see an error message if quarter ranges conflict with each other</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting a quarter</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete a quarter in the "Quarters" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Users'">
+            <div class="header">
+                <span><strong>Users Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with users!</p>
+                <p>Users of the app that can log in. Have student, staff, and admin roles.</p>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Creating a user</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can create a user in the "Users" tab
+                        </p>
+                        <ol>
+                            <li>Press the "Create New User" button</li>
+                            <li>Type in the username the user would log in with in the username field</li>
+                            <li>Type in the password the user would use for logging in the password field</li>
+                            <li>Type in the first and last name of the user in the first and last name fields</li>
+                            <li>Select the role type of the user. If the user is a student, select the grade level as well</li>
+                            <li>Press Create. You would see an error message if other usernames conflict with each other</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Editing a user</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can edit a user in the "Users" tab.
+                        </p>
+                        <ol>
+                            <li>Press the pencil icon on the far right of the datatable</li>
+                            <li>Type in the new username the user would log in with in the username field</li>
+                            <li>Type in the first and last name of the user in the first and last name fields</li>
+                            <li>Select the role type of the user. If the user is a student, select the grade level as well</li>
+                            <li>Press Create. You would see an error message if other usernames conflict with each other</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Rest a user's password</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can reset a user's password in the "Users" tab
+                        </p>
+                        <ol>
+                            <li>Press the black key button next to the record you want to delete</li>
+                            <li>Fill in the new password and confirm the new password</li>
+                            <li>Press submit</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="isAdmin">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <strong>Deleting a user</strong>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div [style.font-size.px]=20>
+                        <p>
+                            You can delete a user in the "Users" tab
+                        </p>
+                        <ol>
+                            <li>Press the red trashcan button next to the record you want to delete</li>
+                            <li>Press the confirm button to confirm your delete</li>
+                        </ol>
+                    </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
+        <div *ngIf="currentTab == 'Steps'">
+            <div class="header">
+                <span><strong>User Steps Help</strong></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="content">
+                <p>This is where you can find help with user steps!</p>
+                <p>User steps are used to log where users go on the SPMS app</p>
+                <p>You can filter a user's log with the user filter</p>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

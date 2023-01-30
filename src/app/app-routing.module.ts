@@ -8,6 +8,7 @@ import { ProfileComponent } from './app-nav/profile/profile.component';
 import { AdminGuard } from './guards/admin.guard';
 import { StaffGuard } from './guards/staff.guard';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { HelpCenterComponent } from './help-center/help-center.component';
 
 // routes to direct user to certain components
 const routes: Routes = [
@@ -32,6 +33,8 @@ const routes: Routes = [
   // lazy load when user is logged in
   { path: 'winners', loadChildren: () => import('./winners/winners.module').then(m => m.WinnersModule), canActivate:[LoginGuard], canLoad: [LoginGuard] },
   { path: 'user-steps', loadChildren: () => import('./user-step/user-step.module').then(m => m.UserStepModule), canActivate: [AdminGuard], canLoad: [AdminGuard]},
+  // help center route
+  { path: 'help', component: HelpCenterComponent , canActivate:[LoginGuard], canLoad: [LoginGuard]},
   // wild card route if user goes to route that doesn't exists
   { path: '**', component: NotfoundComponent}
 ];

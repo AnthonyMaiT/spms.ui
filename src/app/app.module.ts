@@ -30,6 +30,9 @@ import {CarouselModule} from 'ngx-bootstrap/carousel';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { HelpCenterComponent } from './help-center/help-center.component';
+import {MatSidenavModule} from '@angular/material/sidenav'; 
+import {MatListModule} from '@angular/material/list'; 
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { NotfoundComponent } from './notfound/notfound.component';
     HomeComponent,
     ChangePasswordComponent,
     ProfileComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    HelpCenterComponent
   ],
   imports: [
     // imports certain modules to use some functionality
@@ -65,7 +69,9 @@ import { NotfoundComponent } from './notfound/notfound.component';
     MatSnackBarModule,
     EventModule,
     CarouselModule,
-    PaginationModule
+    PaginationModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}

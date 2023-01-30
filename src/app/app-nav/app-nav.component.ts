@@ -34,7 +34,7 @@ export class AppNavComponent implements OnInit {
       if (this.user.role_type_id == 1) {
         this.isAdmin = true
       }
-      if (this.user.role_type_id == 2) {
+      if (this.user.role_type_id == 2 || this.user.role_type_id == 1) {
         this.isStaff = true
       }
     }

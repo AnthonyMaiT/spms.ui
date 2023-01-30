@@ -18,6 +18,7 @@ export class AppComponent implements DoCheck {
 
   // hides toolbar
   hideToolBar = true;
+  hideChat = true;
 
   // chat variables and defaults
   showChat = false;
@@ -45,8 +46,14 @@ export class AppComponent implements DoCheck {
     // hides toolbar if on login page
     if (this.route.url === '/login') {
       this.hideToolBar = true
+      this.hideChat = true
     } else {
       this.hideToolBar = false
+      this.hideChat = false
+    }
+    // hides chat on help center page
+    if (this.route.url ==='/help') {
+      this.hideChat = true
     }
   }
   

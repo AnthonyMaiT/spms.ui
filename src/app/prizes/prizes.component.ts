@@ -56,7 +56,7 @@ export class PrizesComponent implements OnInit, AfterViewInit {
   // to open create prize dialog then loads prize after
   createPrize() {
     const dialogRef = this.dialog.open(CreateUpdatePrizesComponent, {
-      height: '240px',
+      height: '280px',
       width: '475px',
     })
     // once closed, load prize in case of changes
@@ -68,7 +68,7 @@ export class PrizesComponent implements OnInit, AfterViewInit {
   editPrize(prize: Prize) {
     // would open the component with specified height/width and data passed into it
     const dialogRef = this.dialog.open(CreateUpdatePrizesComponent, {
-      height: '240px',
+      height: '280px',
       width: '475px',
       data: prize
     })

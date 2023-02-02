@@ -24,7 +24,7 @@ export class CreateUpdatePrizesComponent implements OnInit {
   ngOnInit(): void {
     this.prizeForm = this.fb.group({
       name: ['', [Validators.required]],
-      level: ['', [Validators.required, Validators.min(1), Validators.max(3)]]
+      level: ['', [Validators.required]]
     })
     if (this.prize) {
       this.prizeForm.patchValue({

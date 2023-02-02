@@ -66,7 +66,7 @@ export class CreateWinnersComponent implements OnInit {
   // removes filter from query
   removeQuarterFilter() {
     this.quarter_name = ''
-    this.quarter_range_id = ''
+    this.winnerForm.get('quarter_range_id')?.setValue(null)
   }
 
 }

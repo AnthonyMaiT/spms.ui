@@ -59,6 +59,8 @@ export class EventTimesComponent implements OnInit, AfterViewInit {
     if (this.user) {
       if (this.user.role_type_id == 1) {
         this.isAdmin = true
+      } else {
+        this.columnsToDisplay.pop()
       }
     }  
   }

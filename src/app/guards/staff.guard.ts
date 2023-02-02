@@ -27,7 +27,7 @@ export class StaffGuard implements CanActivate, CanLoad {
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const user = this.authService.userValue
     if (user) {
-      if (user.role_type_id == 1 || user.role_type_id == 1) {
+      if (user.role_type_id == 2 || user.role_type_id == 1) {
         return true
       } else {
         this.router.navigate(['/'])
